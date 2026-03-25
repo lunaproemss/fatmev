@@ -382,6 +382,19 @@
             border-color: var(--gold);
         }
 
+        /* Small tweaks for popular overlay text/buttons */
+        .popular-overlay .popular-tag {
+            font-size: 9px;
+            padding: 3px 8px;
+            opacity: 0.7;
+        }
+        .popular-overlay .popular-sub { font-size: 9px; }
+        .popular-overlay .popular-add-btn {
+            padding: 4px 10px;
+            font-size: 9px;
+            margin-top: 5px;
+        }
+
         /* ═══════════════════════════════════════════
            CAROUSEL
         ═══════════════════════════════════════════ */
@@ -1159,6 +1172,28 @@
             margin-bottom: 32px;
         }
 
+        .sbp-modal {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 520px;
+            padding: 28px;
+            text-align: center;
+        }
+        .sbp-qr-box {
+            width: 240px;
+            height: 240px;
+            margin: 14px auto;
+            border: 1px solid var(--border);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sbp-qr-box img { width: 100%; height: 100%; object-fit: contain; }
+        .sbp-meta { font-size: 13px; color: var(--text-dim); margin-top: 8px; }
+        .sbp-meta b { color: var(--gold); }
+
         /* ═══════════════════════════════════════════
            TOAST NOTIFICATION
         ═══════════════════════════════════════════ */
@@ -1311,7 +1346,7 @@
 
         .admin-order-info {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(4, 1fr);
             gap: 16px;
             margin-bottom: 16px;
         }
@@ -1344,19 +1379,6 @@
             padding: 4px 0;
             border-bottom: 1px solid var(--border);
         }
-        .popular-overlay .popular-tag {
-    font-size: 9px;
-    padding: 3px 8px;
-    opacity: 0.7;
-}
-.popular-overlay .popular-sub {
-    font-size: 9px;
-}
-.popular-overlay .popular-add-btn {
-    padding: 4px 10px;
-    font-size: 9px;
-    margin-top: 5px;
-}
 
         .admin-order-item:last-child { border-bottom: none; }
 
@@ -1375,6 +1397,60 @@
         }
 
         .admin-empty i { font-size: 48px; color: var(--border); margin-bottom: 16px; display: block; }
+
+        .admin-products-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin: 36px 0 16px;
+        }
+        .admin-product-form {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+        .admin-product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .admin-product-grid .full { grid-column: 1 / -1; }
+        .admin-product-list {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            padding: 16px;
+        }
+        .admin-product-item {
+            display: grid;
+            grid-template-columns: 52px 1fr auto;
+            gap: 12px;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg3);
+            margin-bottom: 10px;
+        }
+        .admin-product-thumb {
+            width: 52px;
+            height: 52px;
+            border: 1px solid var(--border);
+            background-size: cover;
+            background-position: center;
+        }
+        .admin-product-actions { display: flex; gap: 6px; }
+        .admin-mini-btn {
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-dim);
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 7px 9px;
+        }
+        .admin-mini-btn:hover { color: var(--gold); border-color: var(--gold); }
 
         /* ═══════════════════════════════════════════
            RESPONSIVE
@@ -1425,6 +1501,53 @@
         <div class="admin-stats" id="admin-stats"></div>
         <div class="admin-orders-title">Все заказы</div>
         <div id="admin-orders-list"></div>
+        <div class="admin-products-title">Товары</div>
+        <div class="admin-product-form">
+            <div class="admin-product-grid">
+                <div class="full">
+                    <label class="form-label">Название</label>
+                    <input class="form-input" id="p-name" placeholder="Название товара">
+                </div>
+                <div class="full">
+                    <label class="form-label">Описание</label>
+                    <input class="form-input" id="p-sub" placeholder="Футболка · Унисекс">
+                </div>
+                <div>
+                    <label class="form-label">Цена</label>
+                    <input class="form-input" id="p-price" type="number" placeholder="2990">
+                </div>
+                <div>
+                    <label class="form-label">Старая цена</label>
+                    <input class="form-input" id="p-old" type="number" placeholder="3900">
+                </div>
+                <div class="full">
+                    <label class="form-label">Фото (ссылка/путь)</label>
+                    <input class="form-input" id="p-img" placeholder="https://... или 1.PNG">
+                </div>
+                <div>
+                    <label class="form-label">Категория</label>
+                    <select class="form-input" id="p-category">
+                        <option value="carpet">Ковры</option>
+                        <option value="hits">Хиты</option>
+                        <option value="new">Новинки</option>
+                        <option value="classic">Классика</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Бейдж</label>
+                    <input class="form-input" id="p-badge" placeholder="Хит / Новое / Редкая">
+                </div>
+                <div class="full" style="display:flex;align-items:center;gap:8px;margin-top:4px">
+                    <input id="p-visible" type="checkbox" checked style="accent-color:var(--gold)">
+                    <label for="p-visible" style="font-size:13px;color:var(--text)">Показывать на сайте</label>
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:14px">
+                <button class="btn-secondary" onclick="clearProductForm()">Очистить</button>
+                <button class="btn-primary" style="flex:1;justify-content:center" id="p-save-btn" onclick="saveProduct()">Сохранить товар</button>
+            </div>
+        </div>
+        <div class="admin-product-list" id="admin-products-list"></div>
     </div>
 </div>
 
@@ -1519,6 +1642,20 @@
     </div>
 </div>
 
+<div class="order-overlay" id="sbp-modal" style="display:none;">
+    <div class="sbp-modal">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:30px;letter-spacing:2px;margin-bottom:8px">ОПЛАТА СБП</h3>
+        <p class="order-sub" style="margin-bottom:10px">Отсканируйте QR-код для оплаты</p>
+        <div class="sbp-qr-box"><img id="sbp-qr-img" alt="SBP QR"></div>
+        <div class="sbp-meta">Сумма: <b id="sbp-amount">0 ₽</b></div>
+        <div class="sbp-meta">Номер заказа: <b id="sbp-order-id">—</b></div>
+        <div style="display:flex;gap:10px;margin-top:18px">
+            <button class="btn-secondary" onclick="closeSbpModal()">Закрыть</button>
+            <button class="btn-primary" style="flex:1;justify-content:center" onclick="confirmPayment()">Я оплатил</button>
+        </div>
+    </div>
+</div>
+
 <!-- ══════════════════════════════════════════
      HEADER
 ═══════════════════════════════════════════ -->
@@ -1546,20 +1683,6 @@
 </header>
 
 <!-- ══════════════════════════════════════════
-     HERO
-═══════════════════════════════════════════ -->
-<section class="hero">
-    <div class="container">
-        <div class="hero-tag">Dushanbe · SS 2025</div>
-        <h1>FAT<em>MEV</em></h1>
-        <p>Возрождаем историю с помощью моды</p>
-        <a href="https://t.me/fatmevv" target="_blank" class="btn-primary">
-            <i class="fab fa-telegram"></i> Перейти в Telegram
-        </a>
-    </div>
-</section>
-
-<!-- ══════════════════════════════════════════
      КОЛЛЕКЦИЯ С КОВРАМИ (карусель)
 ═══════════════════════════════════════════ -->
 <section id="carpet" class="carousel-section">
@@ -1580,7 +1703,7 @@
                         <div class="card-img" style="background-image:url('16.jpg')"></div>
                         <div class="card-badge" style="background:var(--gold);color:#000;">Редкая</div>
                         <div class="card-body">
-                            <div class="card-name">Somonion</div>
+                            <div class="card-name">Somoniyon</div>
                             <div class="card-sub">Тадж./Иран. империи</div>
                             <div class="card-footer">
                                 <div class="price-row">
@@ -1599,7 +1722,7 @@
                         <div class="card-img" style="background-image:url('17.jpg')"></div>
                         <div class="card-badge" style="background:var(--gold);color:#000;">Редкая</div>
                         <div class="card-body">
-                            <div class="card-name">Sosonion</div>
+                            <div class="card-name">Sosoniyon</div>
                             <div class="card-sub">Тадж./Иран. империи</div>
                             <div class="card-footer">
                                 <div class="price-row">
@@ -1618,7 +1741,7 @@
                         <div class="card-img" style="background-image:url('18.jpg')"></div>
                         <div class="card-badge" style="background:var(--gold);color:#000;">Редкая</div>
                         <div class="card-body">
-                            <div class="card-name">Hahomanishion</div>
+                            <div class="card-name">Hahomanishiyon</div>
                             <div class="card-sub">Тадж./Иран. империи</div>
                             <div class="card-footer">
                                 <div class="price-row">
@@ -2080,8 +2203,7 @@
     <div class="container">
         <div class="footer-top">
             <div class="footer-brand">
-                <div class="footer-brand">
-    <a href="#" class="logo">FAT<span>MEV</span></a>
+                <a href="#" class="logo">FAT<span>MEV</span></a>
                 <p>Возрождаем историю с помощью моды. Минимализм. История. Культура.</p>
             </div>
             <div>
@@ -2115,20 +2237,20 @@ const NOTIFICATIONS_CONFIG = {
     // TELEGRAM: Вставьте токен бота и chat_id
     telegram: {
         enabled: false,                     // ← сменить на true после заполнения
-        botToken: 'YOUR_BOT_TOKEN_HERE',    // ← токен бота от @BotFather
-        chatId: 'YOUR_CHAT_ID_HERE'         // ← ваш chat_id
+        botToken: '8663633039:AAEoRjFP66rotfNPCt3yz331jXi7Pm09V7w',    // ← токен бота от @BotFather
+        chatId: '8395850715'         // ← ваш chat_id
     },
 
     // GOOGLE SHEETS: Вставьте URL вашего Apps Script Web App
     googleSheets: {
         enabled: false,                     // ← сменить на true после настройки
-        webAppUrl: 'YOUR_GOOGLE_SCRIPT_URL' // ← URL из Google Apps Script
+        webAppUrl: 'https://docs.google.com/spreadsheets/d/10vBo1iflOgHRvqkG4FCaLOo6xWM1F7gNww-1rGq_7hw/edit?usp=drivesdk' // ← URL из Google Apps Script
     },
 
     // MAIL.RU / EMAIL: Вставьте URL вашего почтового сервиса (например, formspree.io)
     email: {
         enabled: false,
-        serviceUrl: 'YOUR_EMAIL_SERVICE_URL'
+        serviceUrl: 'malikov.ardasher@mail.ru'
     }
 };
 
@@ -2138,10 +2260,21 @@ const NOTIFICATIONS_CONFIG = {
 
 // Загружаем корзину из localStorage (сохраняется между сессиями)
 let cart = JSON.parse(localStorage.getItem('fatmev_cart') || '[]');
+let currentPaymentOrderId = null;
+let editingProductId = null;
+let products = JSON.parse(localStorage.getItem('fatmev_products') || 'null');
 
 /** Сохраняет корзину в localStorage */
 function saveCart() {
     localStorage.setItem('fatmev_cart', JSON.stringify(cart));
+}
+
+function saveProducts() {
+    localStorage.setItem('fatmev_products', JSON.stringify(products));
+}
+
+function uid(prefix) {
+    return `${prefix}-${Date.now().toString(36)}-${Math.floor(Math.random() * 900 + 100)}`;
 }
 
 /** Добавляет товар в корзину */
@@ -2234,6 +2367,44 @@ function renderCartItems() {
     `).join('');
 }
 
+function parseInitialProductsFromHtml() {
+    const list = [];
+    const addFromCards = (selector, category) => {
+        document.querySelectorAll(selector).forEach((card, idx) => {
+            const img = card.querySelector('[style*="background-image"]');
+            const name = card.querySelector('.card-name,.popular-name')?.textContent?.trim() || '';
+            const sub = card.querySelector('.card-sub,.popular-sub')?.textContent?.trim() || '';
+            const priceNew = card.querySelector('.price-new')?.textContent?.replace(/[^\d]/g, '');
+            const priceOld = card.querySelector('.price-old')?.textContent?.replace(/[^\d]/g, '');
+            const badge = card.querySelector('.card-badge,.popular-tag')?.textContent?.trim() || '';
+            const m = img?.style?.backgroundImage?.match(/url\(['"]?(.*?)['"]?\)/i);
+            const image = m ? m[1] : '';
+            if (!name || !image) return;
+            list.push({
+                id: `${category}-${idx + 1}`,
+                name,
+                sub,
+                img: image,
+                price: Number(priceNew || 0),
+                oldPrice: Number(priceOld || 0) || null,
+                category,
+                badge,
+                visible: true
+            });
+        });
+    };
+
+    addFromCards('#carpet .popular-card', 'carpet');
+    addFromCards('#hits .carousel-track .card', 'hits');
+    addFromCards('#new .carousel-track .card', 'new');
+    addFromCards('#classic .carousel-track .card', 'classic');
+    return list;
+}
+
+function getVisibleProducts(category) {
+    return products.filter(p => p.category === category && p.visible !== false);
+}
+
 /* ════════════════════════════════════════════════════════
    УПРАВЛЕНИЕ МОДАЛКАМИ
 ════════════════════════════════════════════════════════ */
@@ -2301,6 +2472,63 @@ document.querySelectorAll('.size-btn').forEach(btn => {
     });
 });
 
+function esc(s = '') {
+    return String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+}
+
+function renderProductsToSite() {
+    const buildCard = (p) => `
+        <div class="card">
+            <div class="card-img" style="background-image:url('${esc(p.img)}')"></div>
+            ${p.badge ? `<div class="card-badge"${p.category === 'new' ? ' style="background:#fff;color:#080808"' : ''}>${esc(p.badge)}</div>` : ''}
+            <div class="card-body">
+                <div class="card-name">${esc(p.name)}</div>
+                <div class="card-sub">${esc(p.sub)}</div>
+                <div class="card-footer">
+                    <div class="price-row">
+                        <span class="price-new">${formatPrice(p.price)}</span>
+                        ${p.oldPrice ? `<span class="price-old">${formatPrice(p.oldPrice)}</span>` : ''}
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart({id:'${esc(p.id)}',name:'${esc(p.name)}',sub:'${esc(p.sub)}',img:'${esc(p.img)}',price:${p.price},oldPrice:${p.oldPrice || 0}})">
+                        <i class="fas fa-plus"></i> В корзину
+                    </button>
+                </div>
+            </div>
+        </div>`;
+
+    const hitsTrack = document.querySelector('#hits .carousel-track');
+    const newTrack = document.querySelector('#new .carousel-track');
+    const classicTrack = document.querySelector('#classic .carousel-track');
+    const carpetGrid = document.querySelector('#carpet .popular-grid');
+
+    if (hitsTrack) hitsTrack.innerHTML = getVisibleProducts('hits').map(buildCard).join('');
+    if (newTrack) newTrack.innerHTML = getVisibleProducts('new').map(buildCard).join('');
+    if (classicTrack) classicTrack.innerHTML = getVisibleProducts('classic').map(buildCard).join('');
+
+    if (carpetGrid) {
+        const carpets = getVisibleProducts('carpet');
+        carpetGrid.innerHTML = carpets.map((p, i) => `
+            <div class="popular-card ${i === 0 ? 'popular-card--large' : ''}">
+                <div class="popular-img" style="background-image:url('${esc(p.img)}')"></div>
+                <div class="popular-overlay">
+                    <div class="popular-tag">${esc(p.badge || 'РЕДКАЯ')}</div>
+                    <div class="popular-info">
+                        <div class="popular-name">${esc(p.name)}</div>
+                        <div class="popular-sub">${esc(p.sub)}</div>
+                        <div class="price-row">
+                            <span class="price-new">${formatPrice(p.price)}</span>
+                            ${p.oldPrice ? `<span class="price-old">${formatPrice(p.oldPrice)}</span>` : ''}
+                        </div>
+                        <button class="popular-add-btn" onclick="addToCart({id:'${esc(p.id)}',name:'${esc(p.name)}',sub:'${esc(p.sub)}',img:'${esc(p.img)}',price:${p.price},oldPrice:${p.oldPrice || 0}})">
+                            <i class="fas fa-plus"></i> В корзину
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
 /* ════════════════════════════════════════════════════════
    ОФОРМЛЕНИЕ ЗАКАЗА
 ════════════════════════════════════════════════════════ */
@@ -2323,7 +2551,7 @@ function submitOrder() {
 
     // Формируем объект заказа
     const order = {
-        id:      'ORD-' + Date.now(),
+        id:      'FAT-' + Date.now().toString().slice(-5),
         date:    new Date().toLocaleString('ru-RU'),
         name,
         phone,
@@ -2331,7 +2559,8 @@ function submitOrder() {
         size,
         comment,
         items:   JSON.parse(JSON.stringify(cart)),
-        total:   getCartTotal()
+        total:   getCartTotal(),
+        paid:    false
     };
 
     // Сохраняем в localStorage
@@ -2358,8 +2587,7 @@ function submitOrder() {
     document.getElementById('order-comment').value = '';
 
     closeOrderForm();
-    document.getElementById('success-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    openSbpModal(order);
 }
 
 /* ════════════════════════════════════════════════════════
@@ -2453,6 +2681,60 @@ ${itemsList}
     }
 }
 
+function buildSbpLink(order) {
+    return `https://example.com/sbp-pay?amount=${order.total}&order=${encodeURIComponent(order.id)}`;
+}
+
+function openSbpModal(order) {
+    currentPaymentOrderId = order.id;
+    document.getElementById('sbp-amount').textContent = formatPrice(order.total);
+    document.getElementById('sbp-order-id').textContent = order.id;
+    const data = `Оплата заказа ${order.id} на сумму ${formatPrice(order.total)}`;
+    document.getElementById('sbp-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data)}`;
+    const modal = document.getElementById('sbp-modal');
+    modal.style.display = 'flex';
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSbpModal() {
+    const modal = document.getElementById('sbp-modal');
+    modal.classList.remove('open');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+async function confirmPayment() {
+    if (!currentPaymentOrderId) return;
+    const orders = JSON.parse(localStorage.getItem('fatmev_orders') || '[]');
+    const order = orders.find(o => o.id === currentPaymentOrderId);
+    if (!order) return;
+    order.paid = true;
+    order.paidAt = new Date().toLocaleString('ru-RU');
+    localStorage.setItem('fatmev_orders', JSON.stringify(orders));
+    closeSbpModal();
+    showToast('Спасибо! Заказ оплачен');
+    await sendPaymentToTelegram(order);
+    if (document.getElementById('admin-panel').classList.contains('open')) renderAdminPanel();
+}
+
+async function sendPaymentToTelegram(order) {
+    const text = `✅ Оплата СБП\nID: ${order.id}\nСумма: ${formatPrice(order.total)}\nВремя: ${order.paidAt || '-'}`;
+    if (!NOTIFICATIONS_CONFIG.telegram.enabled) {
+        console.log('[ЗАГЛУШКА] Telegram payment:', text);
+        return;
+    }
+    try {
+        await fetch(`https://api.telegram.org/bot${NOTIFICATIONS_CONFIG.telegram.botToken}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: NOTIFICATIONS_CONFIG.telegram.chatId, text })
+        });
+    } catch (e) {
+        console.error('❌ Telegram оплата ошибка:', e);
+    }
+}
+
 /* ════════════════════════════════════════════════════════
    ADMIN PANEL
 ════════════════════════════════════════════════════════ */
@@ -2476,14 +2758,15 @@ function renderAdminPanel() {
 
     // Статистика
     const totalRevenue = orders.reduce((s, o) => s + o.total, 0);
+    const paidRevenue = orders.filter(o => o.paid).reduce((s, o) => s + o.total, 0);
     document.getElementById('admin-stats').innerHTML = `
         <div class="admin-stat">
             <div class="admin-stat-label">Всего заказов</div>
             <div class="admin-stat-value">${orders.length}</div>
         </div>
         <div class="admin-stat">
-            <div class="admin-stat-label">Общая выручка</div>
-            <div class="admin-stat-value">${formatPrice(totalRevenue)}</div>
+            <div class="admin-stat-label">Выручка (оплачено)</div>
+            <div class="admin-stat-value">${formatPrice(paidRevenue)}</div>
         </div>
         <div class="admin-stat">
             <div class="admin-stat-label">Средний чек</div>
@@ -2515,6 +2798,7 @@ function renderAdminPanel() {
                 <div>
                     <div class="admin-order-id">${order.id}</div>
                     <div class="admin-order-date">${order.date}</div>
+                    <div style="margin-top:8px;font-size:11px;color:${order.paid ? '#6dd28a' : 'var(--text-dim)'}">${order.paid ? 'Оплачен' : 'Не оплачен'}</div>
                 </div>
                 <div class="admin-order-total">${formatPrice(order.total)}</div>
             </div>
@@ -2531,6 +2815,10 @@ function renderAdminPanel() {
                     <label>Размер</label>
                     <span>${order.size || '—'}</span>
                 </div>
+                <div class="admin-order-field">
+                    <label>Статус</label>
+                    <span style="color:${order.paid ? '#6dd28a' : 'var(--text-dim)'}">${order.paid ? 'Оплачен' : 'Не оплачен'}</span>
+                </div>
             </div>
             <div class="admin-order-field" style="margin-bottom:12px">
                 <label style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:4px">Адрес доставки</label>
@@ -2541,14 +2829,138 @@ function renderAdminPanel() {
                 <span style="font-size:14px;color:var(--text-dim)">${order.comment}</span>
             </div>` : ''}
             <div class="admin-order-items">${itemsHtml}</div>
+            ${order.paid ? '' : `<div style="display:flex;justify-content:flex-end;gap:8px"><button class="admin-mini-btn" onclick="markOrderPaidByAdmin('${order.id}')">Пометить оплачен</button></div>`}
         </div>`;
     }).join('');
+
+    renderProductsAdmin();
+}
+
+function markOrderPaidByAdmin(orderId) {
+    const orders = JSON.parse(localStorage.getItem('fatmev_orders') || '[]');
+    const order = orders.find(o => o.id === orderId);
+    if (!order) return;
+    order.paid = true;
+    order.paidAt = new Date().toLocaleString('ru-RU');
+    localStorage.setItem('fatmev_orders', JSON.stringify(orders));
+    sendPaymentToTelegram(order);
+    showToast(`Заказ ${order.id} отмечен как оплаченный`);
+    renderAdminPanel();
+}
+
+function clearProductForm() {
+    editingProductId = null;
+    document.getElementById('p-name').value = '';
+    document.getElementById('p-sub').value = '';
+    document.getElementById('p-price').value = '';
+    document.getElementById('p-old').value = '';
+    document.getElementById('p-img').value = '';
+    document.getElementById('p-category').value = 'hits';
+    document.getElementById('p-badge').value = '';
+    document.getElementById('p-visible').checked = true;
+    document.getElementById('p-save-btn').textContent = 'Сохранить товар';
+}
+
+function saveProduct() {
+    const p = {
+        id: editingProductId || uid('prd'),
+        name: document.getElementById('p-name').value.trim(),
+        sub: document.getElementById('p-sub').value.trim(),
+        price: Number(document.getElementById('p-price').value),
+        oldPrice: Number(document.getElementById('p-old').value) || null,
+        img: document.getElementById('p-img').value.trim(),
+        category: document.getElementById('p-category').value,
+        badge: document.getElementById('p-badge').value.trim(),
+        visible: document.getElementById('p-visible').checked
+    };
+    if (!p.name || !p.sub || !p.img || !p.category || !Number.isFinite(p.price) || p.price <= 0) {
+        showToast('Заполните обязательные поля товара', 'error');
+        return;
+    }
+    if (editingProductId) {
+        const idx = products.findIndex(x => x.id === editingProductId);
+        if (idx !== -1) products[idx] = p;
+    } else {
+        products.unshift(p);
+    }
+    saveProducts();
+    clearProductForm();
+    renderProductsToSite();
+    renderProductsAdmin();
+    reinitCarousels();
+}
+
+function editProduct(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    editingProductId = id;
+    document.getElementById('p-name').value = p.name;
+    document.getElementById('p-sub').value = p.sub;
+    document.getElementById('p-price').value = p.price;
+    document.getElementById('p-old').value = p.oldPrice || '';
+    document.getElementById('p-img').value = p.img;
+    document.getElementById('p-category').value = p.category;
+    document.getElementById('p-badge').value = p.badge || '';
+    document.getElementById('p-visible').checked = p.visible !== false;
+    document.getElementById('p-save-btn').textContent = 'Сохранить изменения';
+}
+
+function deleteProduct(id) {
+    products = products.filter(p => p.id !== id);
+    cart = cart.filter(c => c.id !== id);
+    saveCart();
+    updateCartUI();
+    saveProducts();
+    renderProductsToSite();
+    renderProductsAdmin();
+    reinitCarousels();
+}
+
+function toggleProduct(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    p.visible = !(p.visible !== false);
+    saveProducts();
+    renderProductsToSite();
+    renderProductsAdmin();
+    reinitCarousels();
+}
+
+function renderProductsAdmin() {
+    const wrap = document.getElementById('admin-products-list');
+    if (!wrap) return;
+    if (!products.length) {
+        wrap.innerHTML = `<div class="admin-empty"><i class="fas fa-box-open"></i><p>Товаров пока нет</p></div>`;
+        return;
+    }
+    wrap.innerHTML = products.map(p => `
+        <div class="admin-product-item">
+            <div class="admin-product-thumb" style="background-image:url('${esc(p.img)}')"></div>
+            <div>
+                <div style="font-family:'Cormorant Garamond',serif;font-size:18px">${esc(p.name)}</div>
+                <div style="font-size:11px;color:var(--text-dim)">${esc(p.sub)} · ${esc(p.category)} · ${p.visible !== false ? 'видим' : 'скрыт'}</div>
+                <div style="font-size:12px;color:var(--gold)">${formatPrice(p.price)}</div>
+            </div>
+            <div class="admin-product-actions">
+                <button class="admin-mini-btn" onclick="editProduct('${p.id}')">Ред.</button>
+                <button class="admin-mini-btn" onclick="toggleProduct('${p.id}')">${p.visible !== false ? 'Скрыть' : 'Показать'}</button>
+                <button class="admin-mini-btn" onclick="deleteProduct('${p.id}')">Удалить</button>
+            </div>
+        </div>
+    `).join('');
 }
 
 /* ════════════════════════════════════════════════════════
    КАРУСЕЛИ
 ════════════════════════════════════════════════════════ */
+function reinitCarousels() {
 document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+    if (wrapper.dataset.inited === '1') {
+        const track = wrapper.querySelector('.carousel-track');
+        if (track) track.style.transform = 'translateX(0)';
+        return;
+    }
+    wrapper.dataset.inited = '1';
     const track       = wrapper.querySelector('.carousel-track');
     const outer       = wrapper.querySelector('.carousel-track-outer');
     const prevBtn     = wrapper.querySelector('.prev');
@@ -2642,6 +3054,7 @@ document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
         }
     });
 });
+}
 
 /* ════════════════════════════════════════════════════════
    TOAST УВЕДОМЛЕНИЯ
@@ -2652,7 +3065,7 @@ function showToast(message, type = 'success') {
     toast.className = 'toast';
 
     const iconMap = { success: 'fas fa-check-circle', error: 'fas fa-exclamation-circle', warning: 'fas fa-info-circle' };
-    toast.innerHTML = `<i class="${iconMap[type] || iconMap.success}"></i> ${message}`;
+    toast.innerHTML = `<i class="${iconMp[type] || iconMap.success}"></i> ${message}`;
 
     container.appendChild(toast);
     setTimeout(() => {
@@ -2685,10 +3098,22 @@ checkRoute();
    ИНИЦИАЛИЗАЦИЯ
 ════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
+    if (!Array.isArray(products)) {
+        products = parseInitialProductsFromHtml();
+        saveProducts();
+    }
+    renderProductsToSite();
+    reinitCarousels();
     updateCartUI();
 });
 
 // На случай если DOMContentLoaded уже прошёл
+if (!Array.isArray(products)) {
+    products = parseInitialProductsFromHtml();
+    saveProducts();
+}
+renderProductsToSite();
+reinitCarousels();
 updateCartUI();
 </script>
 </body>
