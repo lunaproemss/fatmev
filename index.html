@@ -1486,6 +1486,7 @@
             .admin-order-info { grid-template-columns: 1fr; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -1685,7 +1686,7 @@
 <!-- ══════════════════════════════════════════
      КОЛЛЕКЦИЯ С КОВРАМИ (карусель)
 ═══════════════════════════════════════════ -->
-<section id="carpet" class="carousel-section">
+<section id="carpet" class="popular-section">
     <div class="container">
         <div class="section-header">
             <div class="section-header-left">
@@ -1694,78 +1695,58 @@
             </div>
             <span class="section-count">3 позиции</span>
         </div>
-
-        <div class="carousel-wrapper" data-carousel="carpet">
-            <div class="carousel-track-outer">
-                <div class="carousel-track">
-
-                    <div class="card">
-                        <div class="card-img" style="background-image:url('16.jpg')"></div>
-                        <div class="card-badge" style="background:var(--gold);color:#000;">Редкая</div>
-                        <div class="card-body">
-                            <div class="card-name">Somoniyon</div>
-                            <div class="card-sub">Тадж./Иран. империи</div>
-                            <div class="card-footer">
-                                <div class="price-row">
-                                    <span class="price-new">2 990 ₽</span>
-                                    <span class="price-old">3 900 ₽</span>
-                                </div>
-                                <button class="add-to-cart-btn"
-                                    onclick="addToCart({id:'carpet1',name:'Ковёр · Vol.1',sub:'Тадж./Иран. империи',img:'16.jpg',price:2990,oldPrice:3900})">
-                                    <i class="fas fa-plus"></i> В корзину
-                                </button>
-                            </div>
+        <div class="popular-grid">
+            <div class="popular-card popular-card--large">
+                <div class="popular-img" style="background-image:url('16.jpg')"></div>
+                <div class="popular-overlay">
+                    <div class="popular-tag">Редкая</div>
+                    <div class="popular-info">
+                        <div class="popular-name">Somoniyon</div>
+                        <div class="popular-sub">Тадж./Иран. империи</div>
+                        <div class="price-row">
+                            <span class="price-new">2 990 ₽</span>
+                            <span class="price-old">3 900 ₽</span>
                         </div>
+                        <button class="popular-add-btn" onclick="addToCart({id:'carpet1',name:'Somoniyon',sub:'Тадж./Иран. империи',img:'16.jpg',price:2990,oldPrice:3900})">
+                            <i class="fas fa-plus"></i> В корзину
+                        </button>
                     </div>
-
-                    <div class="card">
-                        <div class="card-img" style="background-image:url('17.jpg')"></div>
-                        <div class="card-badge" style="background:var(--gold);color:#000;">Редкая</div>
-                        <div class="card-body">
-                            <div class="card-name">Sosoniyon</div>
-                            <div class="card-sub">Тадж./Иран. империи</div>
-                            <div class="card-footer">
-                                <div class="price-row">
-                                    <span class="price-new">2 990 ₽</span>
-                                    <span class="price-old">3 900 ₽</span>
-                                </div>
-                                <button class="add-to-cart-btn"
-                                    onclick="addToCart({id:'carpet2',name:'Ковёр · Vol.2',sub:'Тадж./Иран. империи',img:'17.jpg',price:2990,oldPrice:3900})">
-                                    <i class="fas fa-plus"></i> В корзину
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-img" style="background-image:url('18.jpg')"></div>
-                        <div class="card-badge" style="background:var(--gold);color:#000;">Редкая</div>
-                        <div class="card-body">
-                            <div class="card-name">Hahomanishiyon</div>
-                            <div class="card-sub">Тадж./Иран. империи</div>
-                            <div class="card-footer">
-                                <div class="price-row">
-                                    <span class="price-new">2 990 ₽</span>
-                                    <span class="price-old">3 900 ₽</span>
-                                </div>
-                                <button class="add-to-cart-btn"
-                                    onclick="addToCart({id:'carpet3',name:'Ковёр · Vol.3',sub:'Тадж./Иран. империи',img:'18.jpg',price:2990,oldPrice:3900})">
-                                    <i class="fas fa-plus"></i> В корзину
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-            <div class="carousel-footer">
-                <div class="carousel-nav">
-                    <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
-                    <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
+            <div class="popular-card">
+                <div class="popular-img" style="background-image:url('17.jpg')"></div>
+                <div class="popular-overlay">
+                    <div class="popular-tag">Редкая</div>
+                    <div class="popular-info">
+                        <div class="popular-name">Sosoniyon</div>
+                        <div class="popular-sub">Тадж./Иран. империи</div>
+                        <div class="price-row">
+                            <span class="price-new">2 990 ₽</span>
+                            <span class="price-old">3 900 ₽</span>
+                        </div>
+                        <button class="popular-add-btn" onclick="addToCart({id:'carpet2',name:'Sosoniyon',sub:'Тадж./Иран. империи',img:'17.jpg',price:2990,oldPrice:3900})">
+                            <i class="fas fa-plus"></i> В корзину
+                        </button>
+                    </div>
                 </div>
-                <div class="carousel-dots"></div>
             </div>
-            <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+            <div class="popular-card">
+                <div class="popular-img" style="background-image:url('18.jpg')"></div>
+                <div class="popular-overlay">
+                    <div class="popular-tag">Редкая</div>
+                    <div class="popular-info">
+                        <div class="popular-name">Hahomanishiyon</div>
+                        <div class="popular-sub">Тадж./Иран. империи</div>
+                        <div class="price-row">
+                            <span class="price-new">2 990 ₽</span>
+                            <span class="price-old">3 900 ₽</span>
+                        </div>
+                        <button class="popular-add-btn" onclick="addToCart({id:'carpet3',name:'Hahomanishiyon',sub:'Тадж./Иран. империи',img:'18.jpg',price:2990,oldPrice:3900})">
+                            <i class="fas fa-plus"></i> В корзину
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -2236,14 +2217,14 @@
 const NOTIFICATIONS_CONFIG = {
     // TELEGRAM: Вставьте токен бота и chat_id
     telegram: {
-        enabled: false,                     // ← сменить на true после заполнения
+        enabled: true,                     // ← сменить на true после заполнения
         botToken: '8663633039:AAEoRjFP66rotfNPCt3yz331jXi7Pm09V7w',    // ← токен бота от @BotFather
         chatId: '8395850715'         // ← ваш chat_id
     },
 
     // GOOGLE SHEETS: Вставьте URL вашего Apps Script Web App
     googleSheets: {
-        enabled: false,                     // ← сменить на true после настройки
+        enabled: true,                     // ← сменить на true после настройки
         webAppUrl: 'https://docs.google.com/spreadsheets/d/10vBo1iflOgHRvqkG4FCaLOo6xWM1F7gNww-1rGq_7hw/edit?usp=drivesdk' // ← URL из Google Apps Script
     },
 
@@ -3065,7 +3046,7 @@ function showToast(message, type = 'success') {
     toast.className = 'toast';
 
     const iconMap = { success: 'fas fa-check-circle', error: 'fas fa-exclamation-circle', warning: 'fas fa-info-circle' };
-    toast.innerHTML = `<i class="${iconMp[type] || iconMap.success}"></i> ${message}`;
+    toast.innerHTML = `<i class="${iconMap[type] || iconMap.success}"></i> ${message}`;
 
     container.appendChild(toast);
     setTimeout(() => {
@@ -3085,7 +3066,7 @@ function formatPrice(n) {
    URL-BASED ROUTING — /admin
 ════════════════════════════════════════════════════════ */
 function checkRoute() {
-    if (window.location.hash === '#admin' || window.location.pathname.endsWith('/admin')) {
+    if (window.location.hash === '#admin') {
         openAdmin();
     }
 }
