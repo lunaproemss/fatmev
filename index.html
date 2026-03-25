@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ═══════════════════════════════════════════
+           CSS VARIABLES & RESET
+        ═══════════════════════════════════════════ */
         :root {
             --gold: #c0a080;
             --gold-dim: #8a7060;
@@ -20,7 +23,6 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         html { scroll-behavior: smooth; }
 
         body {
@@ -30,7 +32,7 @@
             overflow-x: hidden;
         }
 
-        /* ── NOISE OVERLAY ── */
+        /* Noise overlay */
         body::before {
             content: '';
             position: fixed;
@@ -43,12 +45,14 @@
 
         .container { max-width: 1340px; margin: 0 auto; padding: 0 32px; }
 
-        /* ── HEADER ── */
+        /* ═══════════════════════════════════════════
+           HEADER
+        ═══════════════════════════════════════════ */
         header {
             position: sticky;
             top: 0;
-            z-index: 100;
-            background: rgba(8,8,8,0.92);
+            z-index: 500;
+            background: rgba(8,8,8,0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
         }
@@ -89,7 +93,61 @@
 
         .nav-links a:hover { color: var(--gold); }
 
-        /* ── HERO ── */
+        /* Cart icon in header */
+        .cart-icon-btn {
+            position: relative;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .cart-icon-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--gold);
+            color: var(--bg);
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .cart-count.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* ═══════════════════════════════════════════
+           HERO
+        ═══════════════════════════════════════════ */
         .hero {
             padding: 120px 0 100px;
             text-align: center;
@@ -133,10 +191,7 @@
             margin-bottom: 28px;
         }
 
-        .hero h1 em {
-            font-style: normal;
-            color: var(--gold);
-        }
+        .hero h1 em { font-style: normal; color: var(--gold); }
 
         .hero p {
             font-size: 16px;
@@ -159,6 +214,8 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             transition: all 0.3s;
+            cursor: pointer;
+            border: none;
         }
 
         .btn-primary:hover {
@@ -166,7 +223,44 @@
             transform: translateY(-2px);
         }
 
-        /* ── POPULAR ── */
+        /* ═══════════════════════════════════════════
+           SECTION HEADERS & COMMON
+        ═══════════════════════════════════════════ */
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header-left { display: flex; flex-direction: column; gap: 8px; }
+
+        .section-eyebrow {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .section-title-big {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 4vw, 52px);
+            font-weight: 600;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .section-count {
+            font-size: 12px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        /* ═══════════════════════════════════════════
+           POPULAR / CARPET COLLECTION
+        ═══════════════════════════════════════════ */
         .popular-section {
             padding: 80px 0;
             border-top: 1px solid var(--border);
@@ -193,14 +287,12 @@
 
         .popular-card:hover { border-color: rgba(192,160,128,0.4); }
 
-        .popular-card--large .popular-img {
-            aspect-ratio: 2/3;
-        }
+        .popular-card--large .popular-img { aspect-ratio: 2/3; }
 
         .popular-img {
             aspect-ratio: 4/3;
             background-size: cover;
-            background-position: center ;
+            background-position: center;
             transition: transform 0.6s ease;
         }
 
@@ -209,7 +301,7 @@
         .popular-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, transparent 55%);
+            background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 55%);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -244,73 +336,58 @@
             text-transform: uppercase;
         }
 
-        @media (max-width: 900px) {
-            .popular-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .popular-card--large {
-                grid-column: 1 / 3;
-                grid-row: 1;
-            }
-            .popular-card--large .popular-img { aspect-ratio: 16/9; }
-        }
-
-        @media (max-width: 540px) {
-            .popular-grid { grid-template-columns: 1fr; }
-            .popular-card--large { grid-column: 1; grid-row: 1; }
-            .popular-card--large .popular-img { aspect-ratio: 3/2; }
-        }
-
-        /* ── DIVIDER ── */
-        .divider {
+        /* Price display (small, subtle) */
+        .price-row {
             display: flex;
             align-items: center;
-            gap: 20px;
-            padding: 0;
-            margin: 0;
-        }
-        .divider-line { flex: 1; height: 1px; background: var(--border); }
-        .divider-dot { width: 4px; height: 4px; background: var(--gold); transform: rotate(45deg); }
-
-        /* ── SECTION HEADER ── */
-        .section-header {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--border);
+            gap: 8px;
+            margin-top: 8px;
         }
 
-        .section-header-left { display: flex; flex-direction: column; gap: 8px; }
-
-        .section-eyebrow {
-            font-size: 11px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--gold);
-        }
-
-        .section-title-big {
+        .price-new {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(32px, 4vw, 52px);
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .price-old {
+            font-size: 12px;
+            color: #666;
+            text-decoration: line-through;
+        }
+
+        /* Add to cart button on popular cards */
+        .popular-add-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 7px 14px;
+            background: transparent;
+            border: 1px solid rgba(192,160,128,0.5);
+            color: var(--gold);
+            font-size: 10px;
             font-weight: 600;
             letter-spacing: 2px;
-            line-height: 1;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .section-count {
-            font-size: 12px;
-            color: var(--text-dim);
-            letter-spacing: 1px;
+        .popular-add-btn:hover {
+            background: var(--gold);
+            color: var(--bg);
+            border-color: var(--gold);
         }
 
-        /* ── CAROUSEL SECTION ── */
+        /* ═══════════════════════════════════════════
+           CAROUSEL
+        ═══════════════════════════════════════════ */
         .carousel-section { padding: 80px 0; }
 
-        .carousel-wrapper {
-            position: relative;
-        }
+        .carousel-wrapper { position: relative; }
 
         .carousel-track-outer {
             overflow: hidden;
@@ -327,7 +404,9 @@
             will-change: transform;
         }
 
-        /* ── CARD ── */
+        /* ═══════════════════════════════════════════
+           PRODUCT CARD
+        ═══════════════════════════════════════════ */
         .card {
             flex: 0 0 calc(33.333% - 14px);
             min-width: 0;
@@ -354,7 +433,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, transparent 50%);
+            background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 50%);
         }
 
         .card-badge {
@@ -371,12 +450,13 @@
             font-weight: 600;
         }
 
+        /* Card body: name, sub, price row, add-to-cart */
         .card-body {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 24px;
+            padding: 16px 20px 20px;
             z-index: 2;
         }
 
@@ -386,7 +466,7 @@
             font-weight: 600;
             letter-spacing: 1px;
             color: #fff;
-            margin-bottom: 6px;
+            margin-bottom: 2px;
         }
 
         .card-sub {
@@ -394,14 +474,50 @@
             letter-spacing: 2px;
             color: var(--gold);
             text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
-        /* ── CAROUSEL ARROWS ── */
-        .carousel-nav {
+        .card-footer {
             display: flex;
+            align-items: center;
+            justify-content: space-between;
             gap: 10px;
-            margin-top: 28px;
         }
+
+        /* Add to cart button on product cards */
+        .add-to-cart-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid rgba(192,160,128,0.4);
+            color: var(--gold);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .add-to-cart-btn:hover {
+            background: var(--gold);
+            color: var(--bg);
+            border-color: var(--gold);
+        }
+
+        .add-to-cart-btn.added {
+            background: var(--gold);
+            color: var(--bg);
+            border-color: var(--gold);
+        }
+
+        /* ═══════════════════════════════════════════
+           CAROUSEL CONTROLS
+        ═══════════════════════════════════════════ */
+        .carousel-nav { display: flex; gap: 10px; margin-top: 28px; }
 
         .carousel-btn {
             width: 48px;
@@ -417,20 +533,10 @@
             transition: all 0.3s;
         }
 
-        .carousel-btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
+        .carousel-btn:hover { border-color: var(--gold); color: var(--gold); }
 
-        .carousel-btn:disabled {
-            opacity: 0.2;
-            cursor: not-allowed;
-        }
-
-        .carousel-btn:disabled:hover {
-            border-color: var(--border);
-            color: var(--text-dim);
-        }
+        .carousel-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+        .carousel-btn:disabled:hover { border-color: var(--border); color: var(--text-dim); }
 
         .carousel-dots {
             display: flex;
@@ -448,17 +554,27 @@
             cursor: pointer;
         }
 
-        .carousel-dot.active {
-            width: 40px;
+        .carousel-dot.active { width: 40px; background: var(--gold); }
+
+        .carousel-footer { display: flex; align-items: center; }
+
+        .progress-bar {
+            height: 1px;
+            background: var(--border);
+            position: relative;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .progress-fill {
+            height: 100%;
             background: var(--gold);
+            transition: width 0.4s ease;
         }
 
-        .carousel-footer {
-            display: flex;
-            align-items: center;
-        }
-
-        /* ── ABOUT ── */
+        /* ═══════════════════════════════════════════
+           ABOUT SECTION
+        ═══════════════════════════════════════════ */
         .about-section {
             padding: 100px 0;
             border-top: 1px solid var(--border);
@@ -479,11 +595,7 @@
             margin-bottom: 24px;
         }
 
-        .values-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
+        .values-list { display: flex; flex-direction: column; gap: 0; }
 
         .value-item {
             display: flex;
@@ -503,19 +615,12 @@
             flex-shrink: 0;
         }
 
-        .value-text {
-            font-size: 14px;
-            letter-spacing: 1px;
-            color: var(--text);
-        }
+        .value-text { font-size: 14px; letter-spacing: 1px; color: var(--text); }
+        .value-icon { margin-left: auto; color: var(--gold); font-size: 14px; }
 
-        .value-icon {
-            margin-left: auto;
-            color: var(--gold);
-            font-size: 14px;
-        }
-
-        /* ── FOOTER ── */
+        /* ═══════════════════════════════════════════
+           FOOTER
+        ═══════════════════════════════════════════ */
         footer {
             border-top: 1px solid var(--border);
             padding: 80px 0 40px;
@@ -548,10 +653,7 @@
             transition: all 0.3s;
         }
 
-        .social-link:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
+        .social-link:hover { border-color: var(--gold); color: var(--gold); }
 
         .footer-bottom {
             display: flex;
@@ -562,22 +664,721 @@
         .footer-copy { font-size: 12px; color: var(--text-dim); letter-spacing: 1px; }
         .footer-copy span { color: var(--gold); }
 
-        /* ── PROGRESS BAR ── */
-        .progress-bar {
-            height: 1px;
-            background: var(--border);
-            position: relative;
+        /* ═══════════════════════════════════════════
+           CART OVERLAY
+        ═══════════════════════════════════════════ */
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .cart-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .cart-panel {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 480px;
+            max-width: 100vw;
+            background: var(--bg2);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .cart-overlay.open .cart-panel {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 28px 20px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .cart-header h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .cart-close {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .cart-close:hover { border-color: var(--gold); color: var(--gold); }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 28px;
+        }
+
+        .cart-items::-webkit-scrollbar { width: 4px; }
+        .cart-items::-webkit-scrollbar-track { background: var(--bg); }
+        .cart-items::-webkit-scrollbar-thumb { background: var(--border); }
+
+        .cart-empty {
+            text-align: center;
+            padding: 60px 0;
+            color: var(--text-dim);
+        }
+
+        .cart-empty i {
+            font-size: 48px;
+            color: var(--border);
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .cart-empty p {
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* Single cart item */
+        .cart-item {
+            display: grid;
+            grid-template-columns: 72px 1fr auto;
+            gap: 16px;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .cart-item-img {
+            width: 72px;
+            height: 90px;
+            background-size: cover;
+            background-position: center;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .cart-item-info { min-width: 0; }
+
+        .cart-item-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 3px;
+            white-space: nowrap;
             overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cart-item-sub {
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .qty-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+        .qty-num {
+            width: 32px;
+            height: 28px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .cart-item-price {
+            font-size: 13px;
+            color: var(--gold);
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 12px;
             margin-top: 4px;
+            transition: color 0.2s;
+            display: block;
         }
 
-        .progress-fill {
-            height: 100%;
+        .cart-item-remove:hover { color: #e06060; }
+
+        .cart-actions { flex-shrink: 0; }
+
+        .cart-footer {
+            padding: 20px 28px 28px;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-total-label {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .cart-total-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .cart-checkout-btn {
+            width: 100%;
+            padding: 16px;
             background: var(--gold);
-            transition: width 0.4s ease;
+            color: var(--bg);
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        /* ── MOBILE ── */
+        .cart-checkout-btn:hover {
+            background: var(--gold-bright);
+        }
+
+        /* ═══════════════════════════════════════════
+           ORDER FORM MODAL
+        ═══════════════════════════════════════════ */
+        .order-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .order-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .order-modal {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .order-overlay.open .order-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .order-modal::-webkit-scrollbar { width: 4px; }
+        .order-modal::-webkit-scrollbar-track { background: var(--bg); }
+        .order-modal::-webkit-scrollbar-thumb { background: var(--border); }
+
+        .order-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .order-modal-close:hover { border-color: var(--gold); color: var(--gold); }
+
+        .order-modal h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .order-modal p.order-sub {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 32px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Form styles */
+        .form-group { margin-bottom: 20px; }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus { border-color: var(--gold); }
+
+        .form-input::placeholder { color: var(--text-dim); }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Size selector */
+        .size-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .size-btn {
+            padding: 8px 16px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 12px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .size-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+        .size-btn.selected {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--bg);
+        }
+
+        /* Order summary in form */
+        .order-summary {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .order-summary-title {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+
+        .order-summary-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .order-summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--gold);
+            font-weight: 600;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .order-submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gold);
+            color: var(--bg);
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .order-submit-btn:hover { background: var(--gold-bright); }
+
+        .order-submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ═══════════════════════════════════════════
+           SUCCESS MESSAGE
+        ═══════════════════════════════════════════ */
+        .success-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .success-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .success-modal {
+            background: var(--bg2);
+            border: 1px solid rgba(192,160,128,0.3);
+            padding: 60px 48px;
+            text-align: center;
+            max-width: 440px;
+            width: 100%;
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .success-overlay.open .success-modal { transform: scale(1); }
+
+        .success-icon {
+            font-size: 48px;
+            color: var(--gold);
+            margin-bottom: 24px;
+        }
+
+        .success-modal h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .success-modal p {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        /* ═══════════════════════════════════════════
+           TOAST NOTIFICATION
+        ═══════════════════════════════════════════ */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--bg2);
+            border: 1px solid var(--gold);
+            padding: 12px 20px;
+            font-size: 13px;
+            color: var(--text);
+            max-width: 300px;
+            animation: toastIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast i { color: var(--gold); }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(40px); }
+        }
+
+        /* ═══════════════════════════════════════════
+           ADMIN PAGE (hidden, accessed via #admin)
+        ═══════════════════════════════════════════ */
+        #admin-panel {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 9000;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        #admin-panel.open { display: block; }
+
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 600;
+            letter-spacing: 3px;
+        }
+
+        .admin-header h2 span { color: var(--gold); }
+
+        .admin-close {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .admin-close:hover { border-color: var(--gold); color: var(--gold); }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .admin-stat {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            padding: 24px;
+        }
+
+        .admin-stat-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        .admin-stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .admin-orders-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .admin-order-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .admin-order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-order-id {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .admin-order-date {
+            font-size: 12px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        .admin-order-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .admin-order-field label {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold-dim);
+            margin-bottom: 4px;
+        }
+
+        .admin-order-field span {
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .admin-order-items {
+            background: var(--bg3);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .admin-order-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-dim);
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .popular-overlay .popular-tag {
+    font-size: 9px;
+    padding: 3px 8px;
+    opacity: 0.7;
+}
+.popular-overlay .popular-sub {
+    font-size: 9px;
+}
+.popular-overlay .popular-add-btn {
+    padding: 4px 10px;
+    font-size: 9px;
+    margin-top: 5px;
+}
+
+        .admin-order-item:last-child { border-bottom: none; }
+
+        .admin-order-total {
+            text-align: right;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .admin-empty {
+            text-align: center;
+            padding: 80px 0;
+            color: var(--text-dim);
+        }
+
+        .admin-empty i { font-size: 48px; color: var(--border); margin-bottom: 16px; display: block; }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════════ */
         @media (max-width: 900px) {
             .container { padding: 0 20px; }
             nav { height: 60px; }
@@ -590,394 +1391,1177 @@
             .about-grid { grid-template-columns: 1fr; gap: 40px; }
             .footer-top { flex-direction: column; gap: 32px; }
             .section-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .popular-grid { grid-template-columns: 1fr 1fr; }
+            .popular-card--large { grid-column: 1 / 3; grid-row: 1; }
+            .popular-card--large .popular-img { aspect-ratio: 16/9; }
+            .cart-panel { width: 100%; max-width: 100%; }
+            .order-modal { padding: 28px 24px; }
+            .admin-order-info { grid-template-columns: 1fr 1fr; }
+            .admin-stats { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 540px) {
             .nav-links { display: none; }
             .card { flex: 0 0 calc(80% - 10px); }
             .hero h1 { font-size: clamp(44px, 18vw, 80px); }
+            .popular-grid { grid-template-columns: 1fr; }
+            .popular-card--large { grid-column: 1; grid-row: 1; }
+            .popular-card--large .popular-img { aspect-ratio: 3/2; }
+            .admin-order-info { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <div class="container">
-            <nav>
-               <a href="#" class="logo">
-    <img src="логотип.png" alt="Fatmev" style="height:40px;width:auto;filter:brightness(0) invert(1);">
+<!-- ══════════════════════════════════════════
+     ADMIN PANEL (hidden page)
+═══════════════════════════════════════════ -->
+<div id="admin-panel">
+    <div style="max-width:1200px;margin:0 auto;">
+        <div class="admin-header">
+            <h2>FAT<span>MEV</span> · ADMIN</h2>
+            <button class="admin-close" onclick="closeAdmin()">✕ Закрыть</button>
+        </div>
+        <div class="admin-stats" id="admin-stats"></div>
+        <div class="admin-orders-title">Все заказы</div>
+        <div id="admin-orders-list"></div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TOAST CONTAINER
+═══════════════════════════════════════════ -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ══════════════════════════════════════════
+     CART OVERLAY
+═══════════════════════════════════════════ -->
+<div class="cart-overlay" id="cart-overlay" onclick="handleCartOverlayClick(event)">
+    <div class="cart-panel">
+        <div class="cart-header">
+            <h3>КОРЗИНА</h3>
+            <button class="cart-close" onclick="closeCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items-list"></div>
+        <div class="cart-footer" id="cart-footer">
+            <div class="cart-total-row">
+                <span class="cart-total-label">Итого</span>
+                <span class="cart-total-price" id="cart-total-price">0 ₽</span>
+            </div>
+            <button class="cart-checkout-btn" onclick="openOrderForm()">
+                Оформить заказ <i class="fas fa-arrow-right" style="margin-left:8px"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ORDER FORM MODAL
+═══════════════════════════════════════════ -->
+<div class="order-overlay" id="order-overlay">
+    <div class="order-modal">
+        <button class="order-modal-close" onclick="closeOrderForm()"><i class="fas fa-times"></i></button>
+        <h3>ОФОРМЛЕНИЕ</h3>
+        <p class="order-sub">Заполните данные — мы свяжемся с вами для подтверждения</p>
+
+        <div class="order-summary" id="order-summary-block"></div>
+
+        <div class="form-group">
+            <label class="form-label">Имя *</label>
+            <input type="text" class="form-input" id="order-name" placeholder="Ваше имя">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Телефон *</label>
+            <input type="tel" class="form-input" id="order-phone" placeholder="+7 900 000 00 00">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Адрес доставки *</label>
+            <textarea class="form-input" id="order-address" placeholder="Город, улица, дом, квартира, индекс"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Размер</label>
+            <div class="size-selector" id="size-selector">
+                <button class="size-btn" data-size="XS">XS</button>
+                <button class="size-btn" data-size="S">S</button>
+                <button class="size-btn selected" data-size="M">M</button>
+                <button class="size-btn" data-size="L">L</button>
+                <button class="size-btn" data-size="XL">XL</button>
+                <button class="size-btn" data-size="XXL">XXL</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Комментарий к заказу</label>
+            <textarea class="form-input" id="order-comment" placeholder="Любые пожелания..."></textarea>
+        </div>
+
+        <button class="order-submit-btn" id="order-submit-btn" onclick="submitOrder()">
+            <i class="fas fa-check" style="margin-right:8px"></i> Отправить заказ
+        </button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SUCCESS MODAL
+═══════════════════════════════════════════ -->
+<div class="success-overlay" id="success-overlay">
+    <div class="success-modal">
+        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+        <h3>Заказ принят!</h3>
+        <p>Спасибо за заказ. Мы свяжемся с вами в ближайшее время для подтверждения.<br><br>
+        Также можете написать нам напрямую в <strong style="color:var(--gold)">@Fatmevmerch</strong></p>
+        <button class="btn-primary" onclick="closeSuccess()" style="width:100%;justify-content:center">
+            <i class="fas fa-arrow-left"></i> Продолжить покупки
+        </button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════ -->
+<header>
+    <div class="container">
+        <nav>
+            <a href="#" class="logo">
+    <img src="логотип.png" alt="Fatmev" style="height:70px;width:auto;filter:brightness(0) invert(1);">
 </a>
-                <ul class="nav-links">
-                    <li><a href="#hits">Хиты</a></li>
-                    <li><a href="#new">Новинки</a></li>
-                    <li><a href="#classic">Классика</a></li>
-                    <li><a href="#about">О бренде</a></li>
-                    <li><a href="#contact">Контакты</a></li>
-                </ul>
-            </nav>
+            <ul class="nav-links">
+                <li><a href="#hits">Хиты</a></li>
+                <li><a href="#new">Новинки</a></li>
+                <li><a href="#classic">Классика</a></li>
+                <li><a href="#about">О бренде</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+            <div class="nav-right">
+                <button class="cart-icon-btn" onclick="openCart()" aria-label="Корзина">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-tag">Dushanbe · SS 2025</div>
+        <h1>FAT<em>MEV</em></h1>
+        <p>Возрождаем историю с помощью моды</p>
+        <a href="https://t.me/fatmevv" target="_blank" class="btn-primary">
+            <i class="fab fa-telegram"></i> Перейти в Telegram
+        </a>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     КОЛЛЕКЦИЯ С КОВРАМИ (карусель)
+═══════════════════════════════════════════ -->
+<section id="carpet" class="carousel-section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-header-left">
+                <span class="section-eyebrow">Редкая коллекция</span>
+                <h2 class="section-title-big">Коллекция с коврами</h2>
+            </div>
+            <span class="section-count">3 позиции</span>
         </div>
-    </header>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-tag">Dushanbe · SS 2025</div>
-            <h1>FAT<em>MEV</em></h1>
-            <p>Возрождаем историю с помощью моды</p>
-            <a href="https://t.me/fatmevv" target="_blank" class="btn-primary">
-                <i class="fab fa-telegram"></i> Перейти в Telegram
-            </a>
+        <div class="carousel-wrapper" data-carousel="carpet">
+            <div class="carousel-track-outer">
+                <div class="carousel-track">
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('16.jpg')"></div>
+                        <div class="card-badge" style="background:var(--gold);color:#000;">Редкая</div>
+                        <div class="card-body">
+                            <div class="card-name">Somonion</div>
+                            <div class="card-sub">Тадж./Иран. империи</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 990 ₽</span>
+                                    <span class="price-old">3 900 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'carpet1',name:'Ковёр · Vol.1',sub:'Тадж./Иран. империи',img:'16.jpg',price:2990,oldPrice:3900})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('17.jpg')"></div>
+                        <div class="card-badge" style="background:var(--gold);color:#000;">Редкая</div>
+                        <div class="card-body">
+                            <div class="card-name">Sosonion</div>
+                            <div class="card-sub">Тадж./Иран. империи</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 990 ₽</span>
+                                    <span class="price-old">3 900 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'carpet2',name:'Ковёр · Vol.2',sub:'Тадж./Иран. империи',img:'17.jpg',price:2990,oldPrice:3900})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('18.jpg')"></div>
+                        <div class="card-badge" style="background:var(--gold);color:#000;">Редкая</div>
+                        <div class="card-body">
+                            <div class="card-name">Hahomanishion</div>
+                            <div class="card-sub">Тадж./Иран. империи</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 990 ₽</span>
+                                    <span class="price-old">3 900 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'carpet3',name:'Ковёр · Vol.3',sub:'Тадж./Иран. империи',img:'18.jpg',price:2990,oldPrice:3900})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="carousel-footer">
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
+                    <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="carousel-dots"></div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- ══════════════════════════ ПОПУЛЯРНОЕ ══════════════════════════ -->
-    <section class="popular-section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-header-left">
-                    <span class="section-eyebrow">🆕 Редкая коллекция · До 26 числа</span>
-                    <h2 class="section-title-big">Коллекция с коврами</h2>
+<!-- ══════════════════════════════════════════
+     ХИТЫ ПРОДАЖ
+═══════════════════════════════════════════ -->
+<section id="hits" class="carousel-section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-header-left">
+                <span class="section-eyebrow">01 — Категория</span>
+                <h2 class="section-title-big">Хиты продаж</h2>
+            </div>
+            <span class="section-count">5 позиций</span>
+        </div>
+
+        <div class="carousel-wrapper" data-carousel="hits">
+            <div class="carousel-track-outer">
+                <div class="carousel-track">
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('1.PNG')"></div>
+                        <div class="card-badge">Хит</div>
+                        <div class="card-body">
+                            <div class="card-name">Chakan White</div>
+                            <div class="card-sub">Футболка · Белая</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 990 ₽</span>
+                                    <span class="price-old">3 900 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'hit1',name:'Chakan White',sub:'Футболка · Белая',img:'1.PNG',price:2990,oldPrice:3900})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('3.PNG')"></div>
+                        <div class="card-badge">Хит</div>
+                        <div class="card-body">
+                            <div class="card-name">Chakan Black</div>
+                            <div class="card-sub">Футболка · Чёрная</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 990 ₽</span>
+                                    <span class="price-old">3 900 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'hit2',name:'Chakan Black',sub:'Футболка · Чёрная',img:'3.PNG',price:2990,oldPrice:3900})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('13.jpg')"></div>
+                        <div class="card-badge">Хит</div>
+                        <div class="card-body">
+                            <div class="card-name">Ibn Sina</div>
+                            <div class="card-sub">Футболка · Унисекс</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 990 ₽</span>
+                                    <span class="price-old">3 900 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'hit3',name:'Ibn Sina',sub:'Футболка · Унисекс',img:'13.jpg',price:2990,oldPrice:3900})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('7.jpg')"></div>
+                        <div class="card-badge">Хит</div>
+                        <div class="card-body">
+                            <div class="card-name">Ismail Somoni</div>
+                            <div class="card-sub">Футболка · Унисекс</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'hit4',name:'Ismail Somoni',sub:'Футболка · Унисекс',img:'7.jpg',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('5.PNG')"></div>
+                        <div class="card-badge">Хит</div>
+                        <div class="card-body">
+                            <div class="card-name">Choy Piyola</div>
+                            <div class="card-sub">Футболка · Унисекс</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'hit5',name:'Choy Piyola',sub:'Футболка · Унисекс',img:'5.PNG',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            <div class="popular-grid">
-                <div class="popular-card popular-card--large">
-                    <div class="popular-img" style="background-image:url('16.jpg');background-position:top center"></div>
-                    <div class="popular-overlay">
-                        <div class="popular-tag">РЕДКАЯ КОЛЛЕКЦИЯ</div>
-                        <div class="popular-info">
-                            <div class="popular-name">Ковёр · Vol.1</div>
-                            <div class="popular-sub">Таджикские / Иранские империи</div>
-                            <div style="margin-top:10px;display:flex;align-items:center;gap:10px">
-                                <span style="font-family:'Cormorant Garamond',serif;font-size:26px;color:#fff;font-weight:700">2990₽</span>
-                                <span style="font-size:14px;color:#888;text-decoration:line-through">3900₽</span>
+            <div class="carousel-footer">
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
+                    <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="carousel-dots"></div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     НОВИНКИ
+═══════════════════════════════════════════ -->
+<section id="new" class="carousel-section" style="border-top:1px solid var(--border)">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-header-left">
+                <span class="section-eyebrow">02 — Категория</span>
+                <h2 class="section-title-big">Новинки</h2>
+            </div>
+            <span class="section-count">4 позиции</span>
+        </div>
+
+        <div class="carousel-wrapper" data-carousel="new">
+            <div class="carousel-track-outer">
+                <div class="carousel-track">
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('14.jpg')"></div>
+                        <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
+                        <div class="card-body">
+                            <div class="card-name">Doira Duhtar</div>
+                            <div class="card-sub">Женская коллекция</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'new1',name:'Doira Duhtar',sub:'Женская коллекция',img:'14.jpg',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
                             </div>
-                            <div style="margin-top:6px;font-size:11px;color:var(--gold);letter-spacing:1px">🚚 Доставка бесплатно · Промокод: <b>Tojikam</b> −15%</div>
                         </div>
                     </div>
-                </div>
-                <div class="popular-card">
-                    <div class="popular-img" style="background-image:url('17.jpg');background-position:top center"></div>
-                    <div class="popular-overlay">
-                        <div class="popular-tag">РЕДКАЯ КОЛЛЕКЦИЯ</div>
-                        <div class="popular-info">
-                            <div class="popular-name">Ковёр · Vol.2</div>
-                            <div class="popular-sub">Таджикские / Иранские империи</div>
-                            <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
-                                <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;font-weight:700">2990₽</span>
-                                <span style="font-size:14px;color:#888;text-decoration:line-through">3900₽</span>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('15.jpg')"></div>
+                        <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
+                        <div class="card-body">
+                            <div class="card-name">Badahshon</div>
+                            <div class="card-sub">Женская коллекция</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'new2',name:'Badahshon',sub:'Женская коллекция',img:'15.jpg',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="popular-card">
-                    <div class="popular-img" style="background-image:url('18.jpg');background-position:top center"></div>
-                    <div class="popular-overlay">
-                        <div class="popular-tag">РЕДКАЯ КОЛЛЕКЦИЯ</div>
-                        <div class="popular-info">
-                            <div class="popular-name">Ковёр · Vol.3</div>
-                            <div class="popular-sub">Таджикские / Иранские империи</div>
-                            <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
-                                <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;font-weight:700">2990₽</span>
-                                <span style="font-size:14px;color:#888;text-decoration:line-through">3900₽</span>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('9.jpg')"></div>
+                        <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
+                        <div class="card-body">
+                            <div class="card-name">Sogdiana Girl</div>
+                            <div class="card-sub">Женская коллекция</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'new3',name:'Sogdiana Girl',sub:'Женская коллекция',img:'9.jpg',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
                             </div>
                         </div>
                     </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('11.PNG')"></div>
+                        <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
+                        <div class="card-body">
+                            <div class="card-name">Tajik Girl DJ</div>
+                            <div class="card-sub">Женская коллекция</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'new4',name:'Tajik Girl DJ',sub:'Женская коллекция',img:'11.PNG',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
+            <div class="carousel-footer">
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
+                    <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="carousel-dots"></div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     КЛАССИКА
+═══════════════════════════════════════════ -->
+<section id="classic" class="carousel-section" style="border-top:1px solid var(--border)">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-header-left">
+                <span class="section-eyebrow">03 — Категория</span>
+                <h2 class="section-title-big">Классика</h2>
+            </div>
+            <span class="section-count">6 позиций</span>
+        </div>
+
+        <div class="carousel-wrapper" data-carousel="classic">
+            <div class="carousel-track-outer">
+                <div class="carousel-track">
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('2.jpg')"></div>
+                        <div class="card-body">
+                            <div class="card-name">Chakan White II</div>
+                            <div class="card-sub">Архивный выпуск</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'cl1',name:'Chakan White II',sub:'Архивный выпуск',img:'2.jpg',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('4.JPG')"></div>
+                        <div class="card-body">
+                            <div class="card-name">Chakan Black II</div>
+                            <div class="card-sub">Архивный выпуск</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'cl2',name:'Chakan Black II',sub:'Архивный выпуск',img:'4.JPG',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('6.jpg')"></div>
+                        <div class="card-body">
+                            <div class="card-name">Choy Piyola II</div>
+                            <div class="card-sub">Архивный выпуск</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'cl3',name:'Choy Piyola II',sub:'Архивный выпуск',img:'6.jpg',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('8.jpg')"></div>
+                        <div class="card-body">
+                            <div class="card-name">Ismail Somoni II</div>
+                            <div class="card-sub">Архивный выпуск</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'cl4',name:'Ismail Somoni II',sub:'Архивный выпуск',img:'8.jpg',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('10.jpg')"></div>
+                        <div class="card-body">
+                            <div class="card-name">Sogdiana Girl II</div>
+                            <div class="card-sub">Архивный выпуск</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'cl5',name:'Sogdiana Girl II',sub:'Архивный выпуск',img:'10.jpg',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('12.jpg')"></div>
+                        <div class="card-body">
+                            <div class="card-name">Tajik Girl DJ II</div>
+                            <div class="card-sub">Архивный выпуск</div>
+                            <div class="card-footer">
+                                <div class="price-row">
+                                    <span class="price-new">2 490 ₽</span>
+                                    <span class="price-old">2 800 ₽</span>
+                                </div>
+                                <button class="add-to-cart-btn"
+                                    onclick="addToCart({id:'cl6',name:'Tajik Girl DJ II',sub:'Архивный выпуск',img:'12.jpg',price:2490,oldPrice:2800})">
+                                    <i class="fas fa-plus"></i> В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="carousel-footer">
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
+                    <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="carousel-dots"></div>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     О БРЕНДЕ
+═══════════════════════════════════════════ -->
+<section id="about" class="about-section">
+    <div class="container">
+        <div class="about-grid">
+            <div>
+                <span class="section-eyebrow" style="display:block;margin-bottom:16px">О бренде</span>
+                <h2 class="section-title-big" style="margin-bottom:36px;line-height:1.1">История<br>в каждом<br><em style="font-style:normal;color:var(--gold)">стежке</em></h2>
+                <div class="about-text-block">
+                    <p>Fatmev — это не просто футболки и худи, это искусство, где минимализм, история и культура объединяются в одно целое.</p>
+                    <p>Мы создаём вещи, которые носят историю и характер по сей день.</p>
+                </div>
+                <a href="https://t.me/fatmevv" target="_blank" class="btn-primary" style="margin-top:8px">
+                    <i class="fab fa-telegram"></i> Заказать в Telegram
+                </a>
+            </div>
+            <div class="values-list">
+                <div class="value-item">
+                    <span class="value-num">01</span>
+                    <span class="value-text">Качественные материалы</span>
+                    <i class="fas fa-check value-icon"></i>
+                </div>
+                <div class="value-item">
+                    <span class="value-num">02</span>
+                    <span class="value-text">Уникальный авторский дизайн</span>
+                    <i class="fas fa-check value-icon"></i>
+                </div>
+                <div class="value-item">
+                    <span class="value-num">03</span>
+                    <span class="value-text">Ограниченные выпуски</span>
+                    <i class="fas fa-check value-icon"></i>
+                </div>
+                <div class="value-item">
+                    <span class="value-num">04</span>
+                    <span class="value-text">Доставка по всей стране</span>
+                    <i class="fas fa-check value-icon"></i>
+                </div>
+                <div class="value-item">
+                    <span class="value-num">05</span>
+                    <span class="value-text">История и культура в каждой детали</span>
+                    <i class="fas fa-check value-icon"></i>
+                </div>
+                <div class="value-item">
+                    <span class="value-num">06</span>
+                    <span class="value-text">Бесплатная доставка по всей России</span>
+                    <i class="fas fa-check value-icon"></i>
+                </div>
+
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- ══════════════════════════ ХИТЫ ══════════════════════════ -->
-    <section id="hits" class="carousel-section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-header-left">
-                    <span class="section-eyebrow">01 — Категория</span>
-                    <h2 class="section-title-big">Хиты продаж</h2>
-                </div>
-                <span class="section-count">5 позиций</span>
-            </div>
-
-            <div class="carousel-wrapper" data-carousel="hits">
-                <div class="carousel-track-outer">
-                    <div class="carousel-track">
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('1.PNG')"></div>
-                            <div class="card-badge">Хит</div>
-                            <div class="card-body">
-                                <div class="card-name">Chakan White</div>
-                                <div class="card-sub">Футболка · Белая</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('3.PNG')"></div>
-                            <div class="card-badge">Хит</div>
-                            <div class="card-body">
-                                <div class="card-name">Chakan Black</div>
-                                <div class="card-sub">Футболка · Чёрная</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('13.jpg')"></div>
-                            <div class="card-badge">Хит</div>
-                            <div class="card-body">
-                                <div class="card-name">Ibn Sina</div>
-                                <div class="card-sub">Футболка · Унисекс</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('7.jpg')"></div>
-                            <div class="card-badge">Хит</div>
-                            <div class="card-body">
-                                <div class="card-name">Ismail Somoni</div>
-                                <div class="card-sub">Футболка · Унисекс</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('5.PNG')"></div>
-                            <div class="card-badge">Хит</div>
-                            <div class="card-body">
-                                <div class="card-name">Choy Piyola</div>
-                                <div class="card-sub">Футболка · Унисекс</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-footer">
-                    <div class="carousel-nav">
-                        <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
-                        <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
-                    </div>
-                    <div class="carousel-dots"></div>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══════════════════════════ НОВИНКИ ══════════════════════════ -->
-    <section id="new" class="carousel-section" style="border-top:1px solid var(--border)">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-header-left">
-                    <span class="section-eyebrow">02 — Категория</span>
-                    <h2 class="section-title-big">Новинки</h2>
-                </div>
-                <span class="section-count">4 позиции</span>
-            </div>
-
-            <div class="carousel-wrapper" data-carousel="new">
-                <div class="carousel-track-outer">
-                    <div class="carousel-track">
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('14.jpg')"></div>
-                            <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
-                            <div class="card-body">
-                                <div class="card-name">Doira Duhtar</div>
-                                <div class="card-sub">Женская коллекция</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('15.jpg')"></div>
-                            <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
-                            <div class="card-body">
-                                <div class="card-name">Badahshon</div>
-                                <div class="card-sub">Женская коллекция</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('9.jpg')"></div>
-                            <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
-                            <div class="card-body">
-                                <div class="card-name">Sogdiana Girl</div>
-                                <div class="card-sub">Женская коллекция</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('11.PNG')"></div>
-                            <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
-                            <div class="card-body">
-                                <div class="card-name">Tajik Girl DJ</div>
-                                <div class="card-sub">Женская коллекция</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-footer">
-                    <div class="carousel-nav">
-                        <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
-                        <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
-                    </div>
-                    <div class="carousel-dots"></div>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══════════════════════════ КЛАССИКА ══════════════════════════ -->
-    <section id="classic" class="carousel-section" style="border-top:1px solid var(--border)">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-header-left">
-                    <span class="section-eyebrow">03 — Категория</span>
-                    <h2 class="section-title-big">Классика</h2>
-                </div>
-                <span class="section-count">6 позиций</span>
-            </div>
-
-            <div class="carousel-wrapper" data-carousel="classic">
-                <div class="carousel-track-outer">
-                    <div class="carousel-track">
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('2.jpg')"></div>
-                            <div class="card-body">
-                                <div class="card-name">Chakan White II</div>
-                                <div class="card-sub">Архивный выпуск</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('4.JPG')"></div>
-                            <div class="card-body">
-                                <div class="card-name">Chakan Black II</div>
-                                <div class="card-sub">Архивный выпуск</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('6.jpg')"></div>
-                            <div class="card-body">
-                                <div class="card-name">Choy Piyola II</div>
-                                <div class="card-sub">Архивный выпуск</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('8.jpg')"></div>
-                            <div class="card-body">
-                                <div class="card-name">Ismail Somoni II</div>
-                                <div class="card-sub">Архивный выпуск</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('10.jpg')"></div>
-                            <div class="card-body">
-                                <div class="card-name">Sogdiana Girl II</div>
-                                <div class="card-sub">Архивный выпуск</div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-img" style="background-image:url('12.jpg')"></div>
-                            <div class="card-body">
-                                <div class="card-name">Tajik Girl DJ II</div>
-                                <div class="card-sub">Архивный выпуск</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-footer">
-                    <div class="carousel-nav">
-                        <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
-                        <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
-                    </div>
-                    <div class="carousel-dots"></div>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══════════════════════════ О БРЕНДЕ ══════════════════════════ -->
-    <section id="about" class="about-section">
-        <div class="container">
-            <div class="about-grid">
-                <div>
-                    <span class="section-eyebrow" style="display:block;margin-bottom:16px">О бренде</span>
-                    <h2 class="section-title-big" style="margin-bottom:36px;line-height:1.1">История<br>в каждом<br><em style="font-style:normal;color:var(--gold)">стежке</em></h2>
-                    <div class="about-text-block">
-                        <p>Fatmev — это не просто футболки и худи, это искусство, где минимализм, история и культура объединяются в одно целое.</p>
-                        <p>Мы создаём вещи, которые носят историю и характер по сей день.</p>
-                    </div>
-                    <a href="https://t.me/fatmevv" target="_blank" class="btn-primary" style="margin-top:8px">
-                        <i class="fab fa-telegram"></i> Заказать в Telegram
-                    </a>
-                </div>
-                <div class="values-list">
-                    <div class="value-item">
-                        <span class="value-num">01</span>
-                        <span class="value-text">Качественные материалы</span>
-                        <i class="fas fa-check value-icon"></i>
-                    </div>
-                    <div class="value-item">
-                        <span class="value-num">02</span>
-                        <span class="value-text">Уникальный авторский дизайн</span>
-                        <i class="fas fa-check value-icon"></i>
-                    </div>
-                    <div class="value-item">
-                        <span class="value-num">03</span>
-                        <span class="value-text">Ограниченные выпуски</span>
-                        <i class="fas fa-check value-icon"></i>
-                    </div>
-                    <div class="value-item">
-                        <span class="value-num">04</span>
-                        <span class="value-text">Доставка по всей стране</span>
-                        <i class="fas fa-check value-icon"></i>
-                    </div>
-                    <div class="value-item">
-                        <span class="value-num">05</span>
-                        <span class="value-text">История и культура в каждой детали</span>
-                        <i class="fas fa-check value-icon"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══════════════════════════ FOOTER ══════════════════════════ -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-top">
+<!-- ══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer id="contact">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-brand">
                 <div class="footer-brand">
     <a href="#" class="logo">FAT<span>MEV</span></a>
-                    <p>Возрождаем историю с помощью моды. Минимализм. История. Культура.</p>
-                </div>
-                <div>
-                    <div style="font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:16px">Мы в соцсетях</div>
-                    <div class="social-links">
-                        <a href="https://t.me/fatmevv" target="_blank" class="social-link" title="Telegram">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="https://instagram.com/fatmevmerch" target="_blank" class="social-link" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://tiktok.com/@fatmev.merch" target="_blank" class="social-link" title="TikTok">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                    </div>
-                </div>
+                <p>Возрождаем историю с помощью моды. Минимализм. История. Культура.</p>
             </div>
-            <div class="footer-bottom">
-                <div class="footer-copy">© 2025 FATMEV · Все права защищены</div>
-                <div class="footer-copy">Заказы: <span>@Fatmevmerch</span></div>
+            <div>
+                <div style="font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:16px">Мы в соцсетях</div>
+                <div class="social-links">
+                    <a href="https://t.me/fatmevv" target="_blank" class="social-link" title="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="https://instagram.com/fatmevmerch" target="_blank" class="social-link" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://tiktok.com/@fatmev.merch" target="_blank" class="social-link" title="TikTok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
             </div>
         </div>
-    </footer>
+        <div class="footer-bottom">
+            <div class="footer-copy">© 2025 FATMEV · Все права защищены</div>
+            <div class="footer-copy">Заказы: <span>@Fatmevmerch</span></div>
+        </div>
+    </div>
+</footer>
 
 <script>
-document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
-    const track = wrapper.querySelector('.carousel-track');
-    const outer = wrapper.querySelector('.carousel-track-outer');
-    const prevBtn = wrapper.querySelector('.prev');
-    const nextBtn = wrapper.querySelector('.next');
-    const dotsContainer = wrapper.querySelector('.carousel-dots');
-    const progressFill = wrapper.querySelector('.progress-fill');
+/* ════════════════════════════════════════════════════════
+   КОНФИГУРАЦИЯ УВЕДОМЛЕНИЙ
+   Заполните свои данные перед запуском
+════════════════════════════════════════════════════════ */
+const NOTIFICATIONS_CONFIG = {
+    // TELEGRAM: Вставьте токен бота и chat_id
+    telegram: {
+        enabled: false,                     // ← сменить на true после заполнения
+        botToken: 'YOUR_BOT_TOKEN_HERE',    // ← токен бота от @BotFather
+        chatId: 'YOUR_CHAT_ID_HERE'         // ← ваш chat_id
+    },
 
-    let cards = track.querySelectorAll('.card');
+    // GOOGLE SHEETS: Вставьте URL вашего Apps Script Web App
+    googleSheets: {
+        enabled: false,                     // ← сменить на true после настройки
+        webAppUrl: 'YOUR_GOOGLE_SCRIPT_URL' // ← URL из Google Apps Script
+    },
+
+    // MAIL.RU / EMAIL: Вставьте URL вашего почтового сервиса (например, formspree.io)
+    email: {
+        enabled: false,
+        serviceUrl: 'YOUR_EMAIL_SERVICE_URL'
+    }
+};
+
+/* ════════════════════════════════════════════════════════
+   КОРЗИНА — ЛОГИКА
+════════════════════════════════════════════════════════ */
+
+// Загружаем корзину из localStorage (сохраняется между сессиями)
+let cart = JSON.parse(localStorage.getItem('fatmev_cart') || '[]');
+
+/** Сохраняет корзину в localStorage */
+function saveCart() {
+    localStorage.setItem('fatmev_cart', JSON.stringify(cart));
+}
+
+/** Добавляет товар в корзину */
+function addToCart(product) {
+    const existing = cart.find(i => i.id === product.id);
+    if (existing) {
+        existing.qty += 1;
+    } else {
+        cart.push({ ...product, qty: 1 });
+    }
+    saveCart();
+    updateCartUI();
+    showToast(`${product.name} добавлен в корзину`);
+}
+
+/** Удаляет товар из корзины */
+function removeFromCart(id) {
+    cart = cart.filter(i => i.id !== id);
+    saveCart();
+    updateCartUI();
+    renderCartItems();
+}
+
+/** Изменяет количество товара */
+function changeQty(id, delta) {
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    item.qty = Math.max(1, item.qty + delta);
+    saveCart();
+    updateCartUI();
+    renderCartItems();
+}
+
+/** Считает общую сумму */
+function getCartTotal() {
+    return cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+}
+
+/** Считает общее количество товаров */
+function getCartCount() {
+    return cart.reduce((sum, i) => sum + i.qty, 0);
+}
+
+/** Обновляет счётчик в шапке */
+function updateCartUI() {
+    const count = getCartCount();
+    const countEl = document.getElementById('cart-count');
+    countEl.textContent = count;
+    countEl.classList.toggle('visible', count > 0);
+}
+
+/** Рендерит список товаров в корзине */
+function renderCartItems() {
+    const list = document.getElementById('cart-items-list');
+    const footer = document.getElementById('cart-footer');
+    const totalEl = document.getElementById('cart-total-price');
+
+    if (cart.length === 0) {
+        list.innerHTML = `
+            <div class="cart-empty">
+                <i class="fas fa-shopping-bag"></i>
+                <p>Корзина пуста</p>
+            </div>`;
+        footer.style.display = 'none';
+        return;
+    }
+
+    footer.style.display = 'block';
+    totalEl.textContent = formatPrice(getCartTotal());
+
+    list.innerHTML = cart.map(item => `
+        <div class="cart-item" id="cart-item-${item.id}">
+            <div class="cart-item-img" style="background-image:url('${item.img}')"></div>
+            <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-sub">${item.sub}</div>
+                <div class="cart-item-qty">
+                    <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+                    <div class="qty-num">${item.qty}</div>
+                    <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+                </div>
+            </div>
+            <div style="text-align:right">
+                <div class="cart-item-price">${formatPrice(item.price * item.qty)}</div>
+                <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">
+                    <i class="fas fa-trash-alt"></i> удалить
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+/* ════════════════════════════════════════════════════════
+   УПРАВЛЕНИЕ МОДАЛКАМИ
+════════════════════════════════════════════════════════ */
+
+function openCart() {
+    document.getElementById('cart-overlay').classList.add('open');
+    renderCartItems();
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+    document.getElementById('cart-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function handleCartOverlayClick(e) {
+    if (e.target === document.getElementById('cart-overlay')) closeCart();
+}
+
+function openOrderForm() {
+    if (cart.length === 0) {
+        showToast('Корзина пуста!', 'warning');
+        return;
+    }
+    closeCart();
+    renderOrderSummary();
+    document.getElementById('order-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeOrderForm() {
+    document.getElementById('order-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function closeSuccess() {
+    document.getElementById('success-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+/** Рендерит сводку заказа в форме */
+function renderOrderSummary() {
+    const block = document.getElementById('order-summary-block');
+    const itemsHtml = cart.map(i =>
+        `<div class="order-summary-item">
+            <span>${i.name} × ${i.qty}</span>
+            <span>${formatPrice(i.price * i.qty)}</span>
+        </div>`
+    ).join('');
+
+    block.innerHTML = `
+        <div class="order-summary-title">Ваш заказ</div>
+        ${itemsHtml}
+        <div class="order-summary-total">
+            <span>Итого</span>
+            <span>${formatPrice(getCartTotal())}</span>
+        </div>`;
+}
+
+/* Size selector */
+document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+    });
+});
+
+/* ════════════════════════════════════════════════════════
+   ОФОРМЛЕНИЕ ЗАКАЗА
+════════════════════════════════════════════════════════ */
+
+function submitOrder() {
+    const name    = document.getElementById('order-name').value.trim();
+    const phone   = document.getElementById('order-phone').value.trim();
+    const address = document.getElementById('order-address').value.trim();
+    const size    = document.querySelector('.size-btn.selected')?.dataset.size || 'M';
+    const comment = document.getElementById('order-comment').value.trim();
+
+    // Валидация
+    if (!name)    { showToast('Введите имя', 'error');    return; }
+    if (!phone)   { showToast('Введите телефон', 'error'); return; }
+    if (!address) { showToast('Введите адрес', 'error');   return; }
+
+    const btn = document.getElementById('order-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Отправляем...';
+
+    // Формируем объект заказа
+    const order = {
+        id:      'ORD-' + Date.now(),
+        date:    new Date().toLocaleString('ru-RU'),
+        name,
+        phone,
+        address,
+        size,
+        comment,
+        items:   JSON.parse(JSON.stringify(cart)),
+        total:   getCartTotal()
+    };
+
+    // Сохраняем в localStorage
+    const orders = JSON.parse(localStorage.getItem('fatmev_orders') || '[]');
+    orders.unshift(order);
+    localStorage.setItem('fatmev_orders', JSON.stringify(orders));
+
+    // Отправляем уведомления (асинхронно, не блокируем пользователя)
+    sendNotifications(order);
+
+    // Очищаем корзину
+    cart = [];
+    saveCart();
+    updateCartUI();
+
+    // Закрываем форму, показываем успех
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-check" style="margin-right:8px"></i> Отправить заказ';
+
+    // Сбрасываем поля
+    document.getElementById('order-name').value    = '';
+    document.getElementById('order-phone').value   = '';
+    document.getElementById('order-address').value = '';
+    document.getElementById('order-comment').value = '';
+
+    closeOrderForm();
+    document.getElementById('success-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+/* ════════════════════════════════════════════════════════
+   УВЕДОМЛЕНИЯ (заглушки — настраиваются в NOTIFICATIONS_CONFIG)
+════════════════════════════════════════════════════════ */
+
+async function sendNotifications(order) {
+    const itemsList = order.items.map(i => `  • ${i.name} × ${i.qty} = ${formatPrice(i.price * i.qty)}`).join('\n');
+    const message = `
+🛍 НОВЫЙ ЗАКАЗ FATMEV
+━━━━━━━━━━━━━━━━━
+📋 ID: ${order.id}
+📅 Дата: ${order.date}
+👤 Имя: ${order.name}
+📱 Телефон: ${order.phone}
+📍 Адрес: ${order.address}
+📐 Размер: ${order.size}
+💬 Комментарий: ${order.comment || 'нет'}
+━━━━━━━━━━━━━━━━━
+ТОВАРЫ:
+${itemsList}
+━━━━━━━━━━━━━━━━━
+💰 ИТОГО: ${formatPrice(order.total)}
+    `.trim();
+
+    console.log('=== НОВЫЙ ЗАКАЗ ===', order);
+
+    // — Telegram Bot —
+    if (NOTIFICATIONS_CONFIG.telegram.enabled) {
+        try {
+            await fetch(`https://api.telegram.org/bot${NOTIFICATIONS_CONFIG.telegram.botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: NOTIFICATIONS_CONFIG.telegram.chatId,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            });
+            console.log('✅ Telegram: уведомление отправлено');
+        } catch (e) {
+            console.error('❌ Telegram ошибка:', e);
+        }
+    } else {
+        console.log('[ЗАГЛУШКА] Telegram:', message);
+    }
+
+    // — Google Sheets —
+    if (NOTIFICATIONS_CONFIG.googleSheets.enabled) {
+        try {
+            await fetch(NOTIFICATIONS_CONFIG.googleSheets.webAppUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    orderId:  order.id,
+                    date:     order.date,
+                    name:     order.name,
+                    phone:    order.phone,
+                    address:  order.address,
+                    size:     order.size,
+                    items:    order.items.map(i => `${i.name} x${i.qty}`).join(', '),
+                    total:    order.total
+                })
+            });
+            console.log('✅ Google Sheets: данные отправлены');
+        } catch (e) {
+            console.error('❌ Google Sheets ошибка:', e);
+        }
+    } else {
+        console.log('[ЗАГЛУШКА] Google Sheets: данные были бы записаны');
+    }
+
+    // — Email (Mail.ru / Formspree) —
+    if (NOTIFICATIONS_CONFIG.email.enabled) {
+        try {
+            await fetch(NOTIFICATIONS_CONFIG.email.serviceUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    subject: `Новый заказ Fatmev — ${order.id}`,
+                    message
+                })
+            });
+            console.log('✅ Email: уведомление отправлено');
+        } catch (e) {
+            console.error('❌ Email ошибка:', e);
+        }
+    } else {
+        console.log('[ЗАГЛУШКА] Email: письмо было бы отправлено');
+    }
+}
+
+/* ════════════════════════════════════════════════════════
+   ADMIN PANEL
+════════════════════════════════════════════════════════ */
+
+function openAdmin() {
+    const panel = document.getElementById('admin-panel');
+    panel.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderAdminPanel();
+}
+
+function closeAdmin() {
+    document.getElementById('admin-panel').classList.remove('open');
+    document.body.style.overflow = '';
+    // Убираем #admin из URL
+    history.pushState('', document.title, window.location.pathname);
+}
+
+function renderAdminPanel() {
+    const orders = JSON.parse(localStorage.getItem('fatmev_orders') || '[]');
+
+    // Статистика
+    const totalRevenue = orders.reduce((s, o) => s + o.total, 0);
+    document.getElementById('admin-stats').innerHTML = `
+        <div class="admin-stat">
+            <div class="admin-stat-label">Всего заказов</div>
+            <div class="admin-stat-value">${orders.length}</div>
+        </div>
+        <div class="admin-stat">
+            <div class="admin-stat-label">Общая выручка</div>
+            <div class="admin-stat-value">${formatPrice(totalRevenue)}</div>
+        </div>
+        <div class="admin-stat">
+            <div class="admin-stat-label">Средний чек</div>
+            <div class="admin-stat-value">${orders.length ? formatPrice(Math.round(totalRevenue / orders.length)) : '—'}</div>
+        </div>`;
+
+    // Список заказов
+    const list = document.getElementById('admin-orders-list');
+    if (orders.length === 0) {
+        list.innerHTML = `
+            <div class="admin-empty">
+                <i class="fas fa-box-open"></i>
+                <p>Заказов пока нет</p>
+            </div>`;
+        return;
+    }
+
+    list.innerHTML = orders.map(order => {
+        const itemsHtml = order.items.map(i =>
+            `<div class="admin-order-item">
+                <span>${i.name} × ${i.qty}</span>
+                <span>${formatPrice(i.price * i.qty)}</span>
+            </div>`
+        ).join('');
+
+        return `
+        <div class="admin-order-card">
+            <div class="admin-order-header">
+                <div>
+                    <div class="admin-order-id">${order.id}</div>
+                    <div class="admin-order-date">${order.date}</div>
+                </div>
+                <div class="admin-order-total">${formatPrice(order.total)}</div>
+            </div>
+            <div class="admin-order-info">
+                <div class="admin-order-field">
+                    <label>Покупатель</label>
+                    <span>${order.name}</span>
+                </div>
+                <div class="admin-order-field">
+                    <label>Телефон</label>
+                    <span>${order.phone}</span>
+                </div>
+                <div class="admin-order-field">
+                    <label>Размер</label>
+                    <span>${order.size || '—'}</span>
+                </div>
+            </div>
+            <div class="admin-order-field" style="margin-bottom:12px">
+                <label style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:4px">Адрес доставки</label>
+                <span style="font-size:14px;color:var(--text)">${order.address}</span>
+            </div>
+            ${order.comment ? `<div class="admin-order-field" style="margin-bottom:12px">
+                <label style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:4px">Комментарий</label>
+                <span style="font-size:14px;color:var(--text-dim)">${order.comment}</span>
+            </div>` : ''}
+            <div class="admin-order-items">${itemsHtml}</div>
+        </div>`;
+    }).join('');
+}
+
+/* ════════════════════════════════════════════════════════
+   КАРУСЕЛИ
+════════════════════════════════════════════════════════ */
+document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+    const track       = wrapper.querySelector('.carousel-track');
+    const outer       = wrapper.querySelector('.carousel-track-outer');
+    const prevBtn     = wrapper.querySelector('.prev');
+    const nextBtn     = wrapper.querySelector('.next');
+    const dotsContainer = wrapper.querySelector('.carousel-dots');
+    const progressFill  = wrapper.querySelector('.progress-fill');
+
+    let cards   = track.querySelectorAll('.card');
     let perPage = getPerPage();
-    let total = cards.length;
+    let total   = cards.length;
     let current = 0;
     let isDragging = false;
-    let startX = 0;
-    let scrollLeft = 0;
+    let startX  = 0;
     let dragDelta = 0;
 
     function getPerPage() {
@@ -988,22 +2572,14 @@ document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
         return Math.max(0, total - perPage);
     }
 
-    function getSteps() {
-        const steps = [];
-        for (let i = 0; i <= getMaxIndex(); i++) steps.push(i);
-        return steps;
-    }
-
-    // Build dots
     function buildDots() {
         dotsContainer.innerHTML = '';
-        const steps = getSteps();
-        steps.forEach((_, i) => {
+        for (let i = 0; i <= getMaxIndex(); i++) {
             const dot = document.createElement('div');
             dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
             dot.addEventListener('click', () => goTo(i));
             dotsContainer.appendChild(dot);
-        });
+        }
     }
 
     function updateDots() {
@@ -1013,19 +2589,17 @@ document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
     }
 
     function getCardWidth() {
-        if (cards.length === 0) return 0;
-        return cards[0].getBoundingClientRect().width + 20; // +gap
+        if (!cards.length) return 0;
+        return cards[0].getBoundingClientRect().width + 20;
     }
 
     function goTo(index) {
         const maxIndex = getMaxIndex();
         current = Math.max(0, Math.min(index, maxIndex));
-        const offset = current * getCardWidth();
-        track.style.transform = `translateX(-${offset}px)`;
+        track.style.transform = `translateX(-${current * getCardWidth()}px)`;
         prevBtn.disabled = current === 0;
         nextBtn.disabled = current >= maxIndex;
         updateDots();
-        // progress
         const pct = maxIndex === 0 ? 100 : Math.round(((current + perPage) / total) * 100);
         if (progressFill) progressFill.style.width = pct + '%';
     }
@@ -1033,16 +2607,9 @@ document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
     prevBtn.addEventListener('click', () => goTo(current - 1));
     nextBtn.addEventListener('click', () => goTo(current + 1));
 
-    // Touch / drag support
-    outer.addEventListener('touchstart', e => {
-        startX = e.touches[0].pageX;
-        dragDelta = 0;
-    }, { passive: true });
-
-    outer.addEventListener('touchmove', e => {
-        dragDelta = e.touches[0].pageX - startX;
-    }, { passive: true });
-
+    // Touch
+    outer.addEventListener('touchstart', e => { startX = e.touches[0].pageX; dragDelta = 0; }, { passive: true });
+    outer.addEventListener('touchmove', e => { dragDelta = e.touches[0].pageX - startX; }, { passive: true });
     outer.addEventListener('touchend', () => {
         if (dragDelta < -50) goTo(current + 1);
         else if (dragDelta > 50) goTo(current - 1);
@@ -1050,31 +2617,22 @@ document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
 
     // Mouse drag
     outer.addEventListener('mousedown', e => {
-        isDragging = true;
-        startX = e.pageX;
-        dragDelta = 0;
+        isDragging = true; startX = e.pageX; dragDelta = 0;
         track.style.transition = 'none';
     });
-
-    window.addEventListener('mousemove', e => {
-        if (!isDragging) return;
-        dragDelta = e.pageX - startX;
-    });
-
+    window.addEventListener('mousemove', e => { if (isDragging) dragDelta = e.pageX - startX; });
     window.addEventListener('mouseup', () => {
         if (!isDragging) return;
         isDragging = false;
         track.style.transition = '';
         if (dragDelta < -60) goTo(current + 1);
         else if (dragDelta > 60) goTo(current - 1);
-        else goTo(current); // snap back
+        else goTo(current);
     });
 
-    // Init
     buildDots();
     goTo(0);
 
-    // Recalc on resize
     window.addEventListener('resize', () => {
         const newPer = getPerPage();
         if (newPer !== perPage) {
@@ -1084,7 +2642,54 @@ document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
         }
     });
 });
-</script>
 
+/* ════════════════════════════════════════════════════════
+   TOAST УВЕДОМЛЕНИЯ
+════════════════════════════════════════════════════════ */
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+
+    const iconMap = { success: 'fas fa-check-circle', error: 'fas fa-exclamation-circle', warning: 'fas fa-info-circle' };
+    toast.innerHTML = `<i class="${iconMap[type] || iconMap.success}"></i> ${message}`;
+
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = 'toastOut 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+/* ════════════════════════════════════════════════════════
+   УТИЛИТЫ
+════════════════════════════════════════════════════════ */
+function formatPrice(n) {
+    return n.toLocaleString('ru-RU') + ' ₽';
+}
+
+/* ════════════════════════════════════════════════════════
+   URL-BASED ROUTING — /admin
+════════════════════════════════════════════════════════ */
+function checkRoute() {
+    if (window.location.hash === '#admin' || window.location.pathname.endsWith('/admin')) {
+        openAdmin();
+    }
+}
+
+window.addEventListener('hashchange', checkRoute);
+window.addEventListener('popstate', checkRoute);
+checkRoute();
+
+/* ════════════════════════════════════════════════════════
+   ИНИЦИАЛИЗАЦИЯ
+════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+    updateCartUI();
+});
+
+// На случай если DOMContentLoaded уже прошёл
+updateCartUI();
+</script>
 </body>
 </html>
