@@ -423,11 +423,26 @@
         .card {
             flex: 0 0 calc(33.333% - 14px);
             min-width: 0;
+            max-width: calc(33.333% - 14px);
             position: relative;
             overflow: hidden;
             background: var(--bg3);
             border: 1px solid var(--border);
             transition: border-color 0.4s;
+        }
+
+        @media (max-width: 900px) {
+            .card {
+                flex: 0 0 calc(50% - 10px);
+                max-width: calc(50% - 10px);
+            }
+        }
+
+        @media (max-width: 540px) {
+            .card {
+                flex: 0 0 calc(80% - 10px);
+                max-width: calc(80% - 10px);
+            }
         }
 
         .card:hover { border-color: rgba(192,160,128,0.4); }
@@ -1770,6 +1785,7 @@
         </div>
     </div>
 </section>
+
 <!-- ══════════════════════════════════════════
      ХИТЫ ПРОДАЖ
 ═══════════════════════════════════════════ -->
@@ -2955,103 +2971,207 @@ function renderProductsAdmin() {
 ════════════════════════════════════════════════════════ */
 function reinitCarousels() {
 document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+    // Skip if already initialized
     if (wrapper.dataset.inited === '1') {
-        const track = wrapper.querySelector('.carousel-track');
-        if (track) track.style.transform = 'translateX(0)';
         return;
     }
     wrapper.dataset.inited = '1';
-    const track       = wrapper.querySelector('.carousel-track');
-    const outer       = wrapper.querySelector('.carousel-track-outer');
-    const prevBtn     = wrapper.querySelector('.prev');
-    const nextBtn     = wrapper.querySelector('.next');
-    const dotsContainer = wrapper.querySelector('.carousel-dots');
-    const progressFill  = wrapper.querySelector('.progress-fill');
 
-    let cards   = track.querySelectorAll('.card');
-    let perPage = getPerPage();
-    let total   = cards.length;
+    const track = wrapper.querySelector('.carousel-track');
+    const outer = wrapper.querySelector('.carousel-track-outer');
+    const prevBtn = wrapper.querySelector('.prev');
+    const nextBtn = wrapper.querySelector('.next');
+    const dotsContainer = wrapper.querySelector('.carousel-dots');
+    const progressFill = wrapper.querySelector('.progress-fill');
+
+    let cards = Array.from(track.querySelectorAll('.card'));
+    let total = cards.length;
     let current = 0;
     let isDragging = false;
-    let startX  = 0;
+    let startX = 0;
     let dragDelta = 0;
+    let cardWidth = 0;
+    let gap = 20;
 
+    // Get number of visible cards based on screen width
     function getPerPage() {
-        return window.innerWidth <= 540 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+        const containerWidth = outer.getBoundingClientRect().width;
+        if (containerWidth <= 540) return 1;
+        if (containerWidth <= 900) return 2;
+        return 3;
     }
 
+    let perPage = getPerPage();
+
+    // Calculate card width including gap
+    function updateCardWidth() {
+        if (!cards.length) return 0;
+        const containerWidth = outer.getBoundingClientRect().width;
+        // Card width = (container width - (gaps between visible cards)) / perPage
+        cardWidth = (containerWidth - (gap * (perPage - 1))) / perPage;
+        // Set actual width to cards for consistency
+        cards.forEach(card => {
+            card.style.flex = `0 0 ${cardWidth}px`;
+            card.style.minWidth = `${cardWidth}px`;
+        });
+        return cardWidth + gap;
+    }
+
+    // Maximum index we can scroll to
     function getMaxIndex() {
         return Math.max(0, total - perPage);
     }
 
     function buildDots() {
+        if (!dotsContainer) return;
         dotsContainer.innerHTML = '';
-        for (let i = 0; i <= getMaxIndex(); i++) {
+        const maxIndex = getMaxIndex();
+        for (let i = 0; i <= maxIndex; i++) {
             const dot = document.createElement('div');
-            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            dot.className = 'carousel-dot' + (i === current ? ' active' : '');
             dot.addEventListener('click', () => goTo(i));
             dotsContainer.appendChild(dot);
         }
     }
 
     function updateDots() {
+        if (!dotsContainer) return;
         dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
             d.classList.toggle('active', i === current);
         });
     }
 
-    function getCardWidth() {
-        if (!cards.length) return 0;
-        return cards[0].getBoundingClientRect().width + 20;
+    function updateProgress() {
+        if (!progressFill) return;
+        const maxIndex = getMaxIndex();
+        if (maxIndex === 0) {
+            progressFill.style.width = '100%';
+        } else {
+            const progress = ((current + perPage) / total) * 100;
+            progressFill.style.width = Math.min(progress, 100) + '%';
+        }
+    }
+
+    function updateButtons() {
+        const maxIndex = getMaxIndex();
+        if (prevBtn) prevBtn.disabled = current === 0;
+        if (nextBtn) nextBtn.disabled = current >= maxIndex;
     }
 
     function goTo(index) {
         const maxIndex = getMaxIndex();
         current = Math.max(0, Math.min(index, maxIndex));
-        track.style.transform = `translateX(-${current * getCardWidth()}px)`;
-        prevBtn.disabled = current === 0;
-        nextBtn.disabled = current >= maxIndex;
+
+        const step = updateCardWidth();
+        const offset = current * step;
+
+        track.style.transform = `translateX(-${offset}px)`;
+
+        updateButtons();
         updateDots();
-        const pct = maxIndex === 0 ? 100 : Math.round(((current + perPage) / total) * 100);
-        if (progressFill) progressFill.style.width = pct + '%';
+        updateProgress();
     }
 
-    prevBtn.addEventListener('click', () => goTo(current - 1));
-    nextBtn.addEventListener('click', () => goTo(current + 1));
+    function next() {
+        const maxIndex = getMaxIndex();
+        if (current < maxIndex) {
+            goTo(current + 1);
+        }
+    }
 
-    // Touch
-    outer.addEventListener('touchstart', e => { startX = e.touches[0].pageX; dragDelta = 0; }, { passive: true });
-    outer.addEventListener('touchmove', e => { dragDelta = e.touches[0].pageX - startX; }, { passive: true });
-    outer.addEventListener('touchend', () => {
-        if (dragDelta < -50) goTo(current + 1);
-        else if (dragDelta > 50) goTo(current - 1);
-    });
+    function prev() {
+        if (current > 0) {
+            goTo(current - 1);
+        }
+    }
 
-    // Mouse drag
-    outer.addEventListener('mousedown', e => {
-        isDragging = true; startX = e.pageX; dragDelta = 0;
+    // Event listeners
+    if (prevBtn) prevBtn.addEventListener('click', prev);
+    if (nextBtn) nextBtn.addEventListener('click', next);
+
+    // Touch events
+    outer.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+        dragDelta = 0;
         track.style.transition = 'none';
+    }, { passive: true });
+
+    outer.addEventListener('touchmove', e => {
+        if (startX === 0) return;
+        const x = e.touches[0].clientX;
+        dragDelta = x - startX;
+        const step = updateCardWidth();
+        const currentOffset = current * step;
+        const newOffset = currentOffset - dragDelta;
+        track.style.transform = `translateX(-${newOffset}px)`;
+    }, { passive: true });
+
+    outer.addEventListener('touchend', () => {
+        track.style.transition = '';
+        if (dragDelta < -50) {
+            next();
+        } else if (dragDelta > 50) {
+            prev();
+        } else {
+            goTo(current);
+        }
+        startX = 0;
+        dragDelta = 0;
     });
-    window.addEventListener('mousemove', e => { if (isDragging) dragDelta = e.pageX - startX; });
-    window.addEventListener('mouseup', () => {
+
+    // Mouse drag events
+    outer.addEventListener('mousedown', e => {
+        isDragging = true;
+        startX = e.clientX;
+        dragDelta = 0;
+        track.style.transition = 'none';
+        outer.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        dragDelta = e.clientX - startX;
+        const step = updateCardWidth();
+        const currentOffset = current * step;
+        const newOffset = currentOffset - dragDelta;
+        track.style.transform = `translateX(-${newOffset}px)`;
+    });
+
+    document.addEventListener('mouseup', () => {
         if (!isDragging) return;
         isDragging = false;
         track.style.transition = '';
-        if (dragDelta < -60) goTo(current + 1);
-        else if (dragDelta > 60) goTo(current - 1);
-        else goTo(current);
+        outer.style.cursor = '';
+
+        if (dragDelta < -60) {
+            next();
+        } else if (dragDelta > 60) {
+            prev();
+        } else {
+            goTo(current);
+        }
+        dragDelta = 0;
     });
 
+    // Initialize
+    updateCardWidth();
     buildDots();
     goTo(0);
 
+    // Handle resize
+    let resizeTimeout;
     window.addEventListener('resize', () => {
-        const newPer = getPerPage();
-        if (newPer !== perPage) {
-            perPage = newPer;
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            const newPerPage = getPerPage();
+            if (newPerPage !== perPage) {
+                perPage = newPerPage;
+                current = Math.min(current, getMaxIndex());
+            }
+            updateCardWidth();
             buildDots();
-            goTo(Math.min(current, getMaxIndex()));
-        }
+            goTo(current);
+        }, 100);
     });
 });
 }
