@@ -4,425 +4,1074 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fatmev — Возрождаем историю через моду</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --gold: #c0a080;
+            --gold-dim: #8a7060;
+            --gold-bright: #d4b896;
+            --bg: #080808;
+            --bg2: #111111;
+            --bg3: #181818;
+            --border: #222222;
+            --text: #e8e0d8;
+            --text-dim: #888880;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: #ffffff;
-            line-height: 1.6;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
         }
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 20px;
+
+        /* ── NOISE OVERLAY ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
         }
+
+        .container { max-width: 1340px; margin: 0 auto; padding: 0 32px; }
+
+        /* ── HEADER ── */
         header {
-            padding: 20px 0;
-            border-bottom: 1px solid #1e1e1e;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8,8,8,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
         }
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            height: 72px;
         }
+
         .logo {
-            display: flex;
-            align-items: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: var(--text);
             text-decoration: none;
         }
-        .logo img {
-            height: 45px;
-            width: auto;
-            filter: brightness(0) invert(1);
-        }
+
+        .logo span { color: var(--gold); }
+
         .nav-links {
             display: flex;
             gap: 40px;
             list-style: none;
         }
+
         .nav-links a {
             text-decoration: none;
-            color: #cccccc;
-            font-weight: 400;
-            transition: color 0.3s;
-            font-size: 16px;
-        }
-        .nav-links a:hover {
-            color: #c0a080;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        section {
-            scroll-margin-top: 100px;
-        }
-        .hero {
-            padding: 80px 0;
-            text-align: center;
-            border-bottom: 1px solid #1e1e1e;
-        }
-        .hero h1 {
-            font-size: 72px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-        .hero h1 span {
-            color: #c0a080;
-        }
-        .hero p {
-            font-size: 20px;
-            color: #aaaaaa;
-            max-width: 600px;
-            margin: 0 auto 40px;
-            font-weight: 300;
-        }
-        .btn {
-            display: inline-block;
-            padding: 16px 48px;
-            background: transparent;
-            border: 1px solid #c0a080;
-            color: #c0a080;
-            text-decoration: none;
+            color: var(--text-dim);
+            font-size: 13px;
             font-weight: 500;
             letter-spacing: 2px;
-            transition: all 0.3s;
+            text-transform: uppercase;
+            transition: color 0.3s;
         }
-        .btn:hover {
-            background: #c0a080;
-            color: #0a0a0a;
+
+        .nav-links a:hover { color: var(--gold); }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 120px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        .about {
-            padding: 80px 0;
-            border-bottom: 1px solid #1e1e1e;
+
+        .hero::before {
+            content: 'FATMEV';
+            position: absolute;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(120px, 22vw, 340px);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(192,160,128,0.06);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            white-space: nowrap;
         }
-        .section-title {
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 40px;
-            letter-spacing: 2px;
+
+        .hero-tag {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(192,160,128,0.3);
+            padding: 6px 20px;
+            margin-bottom: 36px;
         }
-        .section-title span {
-            color: #c0a080;
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(64px, 12vw, 140px);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            line-height: 0.9;
+            margin-bottom: 28px;
         }
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
+
+        .hero h1 em {
+            font-style: normal;
+            color: var(--gold);
         }
-        .about-text p {
-            color: #cccccc;
-            margin-bottom: 20px;
-            font-size: 18px;
+
+        .hero p {
+            font-size: 16px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            margin-bottom: 52px;
             font-weight: 300;
         }
-        .values {
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 44px;
+            background: var(--gold);
+            color: var(--bg);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-bright);
+            transform: translateY(-2px);
+        }
+
+        /* ── POPULAR ── */
+        .popular-section {
+            padding: 80px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .popular-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 16px;
+        }
+
+        .popular-card--large {
+            grid-column: 1;
+            grid-row: 1 / 3;
+        }
+
+        .popular-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: border-color 0.4s;
+        }
+
+        .popular-card:hover { border-color: rgba(192,160,128,0.4); }
+
+        .popular-card--large .popular-img {
+            aspect-ratio: 2/3;
+        }
+
+        .popular-img {
+            aspect-ratio: 4/3;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s ease;
+        }
+
+        .popular-card:hover .popular-img { transform: scale(1.04); }
+
+        .popular-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, transparent 55%);
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            justify-content: space-between;
+            padding: 20px;
         }
+
+        .popular-tag {
+            align-self: flex-start;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--bg);
+            background: var(--gold);
+            padding: 5px 14px;
+        }
+
+        .popular-info { margin-top: auto; }
+
+        .popular-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .popular-sub {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 900px) {
+            .popular-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .popular-card--large {
+                grid-column: 1 / 3;
+                grid-row: 1;
+            }
+            .popular-card--large .popular-img { aspect-ratio: 16/9; }
+        }
+
+        @media (max-width: 540px) {
+            .popular-grid { grid-template-columns: 1fr; }
+            .popular-card--large { grid-column: 1; grid-row: 1; }
+            .popular-card--large .popular-img { aspect-ratio: 3/2; }
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+        }
+        .divider-line { flex: 1; height: 1px; background: var(--border); }
+        .divider-dot { width: 4px; height: 4px; background: var(--gold); transform: rotate(45deg); }
+
+        /* ── SECTION HEADER ── */
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header-left { display: flex; flex-direction: column; gap: 8px; }
+
+        .section-eyebrow {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .section-title-big {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 4vw, 52px);
+            font-weight: 600;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .section-count {
+            font-size: 12px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        /* ── CAROUSEL SECTION ── */
+        .carousel-section { padding: 80px 0; }
+
+        .carousel-wrapper {
+            position: relative;
+        }
+
+        .carousel-track-outer {
+            overflow: hidden;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .carousel-track-outer:active { cursor: grabbing; }
+
+        .carousel-track {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        /* ── CARD ── */
+        .card {
+            flex: 0 0 calc(33.333% - 14px);
+            min-width: 0;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            transition: border-color 0.4s;
+        }
+
+        .card:hover { border-color: rgba(192,160,128,0.4); }
+
+        .card-img {
+            aspect-ratio: 3/4;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s ease;
+            position: relative;
+        }
+
+        .card:hover .card-img { transform: scale(1.04); }
+
+        .card-img::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, transparent 50%);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 2;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            background: var(--gold);
+            color: var(--bg);
+            font-weight: 600;
+        }
+
+        .card-body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px;
+            z-index: 2;
+        }
+
+        .card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .card-sub {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        /* ── CAROUSEL ARROWS ── */
+        .carousel-nav {
+            display: flex;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .carousel-btn {
+            width: 48px;
+            height: 48px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .carousel-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .carousel-btn:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+
+        .carousel-btn:disabled:hover {
+            border-color: var(--border);
+            color: var(--text-dim);
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            margin-top: 28px;
+            margin-left: auto;
+        }
+
+        .carousel-dot {
+            width: 20px;
+            height: 2px;
+            background: var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .carousel-dot.active {
+            width: 40px;
+            background: var(--gold);
+        }
+
+        .carousel-footer {
+            display: flex;
+            align-items: center;
+        }
+
+        /* ── ABOUT ── */
+        .about-section {
+            padding: 100px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-text-block p {
+            font-size: 17px;
+            color: var(--text-dim);
+            font-weight: 300;
+            line-height: 1.9;
+            margin-bottom: 24px;
+        }
+
+        .values-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
         .value-item {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--border);
         }
-        .value-item i {
-            color: #c0a080;
-            font-size: 20px;
+
+        .value-item:first-child { border-top: 1px solid var(--border); }
+
+        .value-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 13px;
+            color: var(--gold-dim);
+            width: 24px;
+            flex-shrink: 0;
         }
-        .lookbook {
-            padding: 80px 0;
-            border-bottom: 1px solid #1e1e1e;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 30px;
-        }
-        .grid-item {
-            aspect-ratio: 3/4;
-            background-color: #1a1a1a;
-            display: flex;
-            align-items: flex-end;
-            border: 1px solid #333;
-            overflow: hidden;
-            transition: transform 0.3s, border-color 0.3s;
-            background-size: cover;
-            background-position: center;
-        }
-        .grid-item:hover {
-            transform: scale(1.02);
-            border-color: #c0a080;
-        }
-        .grid-item p {
-            width: 100%;
-            background: rgba(10, 10, 10, 0.8);
-            color: white;
-            padding: 12px;
-            text-align: center;
+
+        .value-text {
             font-size: 14px;
             letter-spacing: 1px;
+            color: var(--text);
         }
+
+        .value-icon {
+            margin-left: auto;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        /* ── FOOTER ── */
         footer {
-            padding: 60px 0;
-            text-align: center;
+            border-top: 1px solid var(--border);
+            padding: 80px 0 40px;
         }
-       /* КОНТАКТЫ */
-#contact .section-title {
-    text-align: center;
-    margin-bottom: 40px;
-}
 
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
-}
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 60px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
 
-.social-link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: #888;
-    transition: color 0.3s;
-    gap: 8px;
-}
+        .footer-brand .logo { font-size: 32px; display: block; margin-bottom: 12px; }
+        .footer-brand p { font-size: 13px; color: var(--text-dim); max-width: 260px; line-height: 1.7; }
 
-.social-link i {
-    font-size: 32px;
-}
+        .social-links { display: flex; gap: 12px; }
 
-.social-link span {
-    font-size: 14px;
-}
+        .social-link {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
 
-.social-link:hover {
-    color: #c0a080;
-}
+        .social-link:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
 
-.footer-text {
-    text-align: center;
-    color: #666;
-    font-size: 14px;
-    letter-spacing: 1px;
-}
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.footer-text span {
-    color: #c0a080;
-}
-        
-        /* МОБИЛЬНАЯ ВЕРСИЯ */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 15px;
-            }
-            
-            nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav-links {
-                display: flex !important;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-            }
-            
-            .nav-links a {
-                font-size: 14px;
-            }
-            
-            .hero h1 {
-                font-size: 42px;
-            }
-            
-            .hero p {
-                font-size: 16px;
-                padding: 0 10px;
-            }
-            
-            .btn {
-                padding: 12px 30px;
-                font-size: 14px;
-            }
-            
-            .section-title {
-                font-size: 28px;
-                text-align: center;
-            }
-            
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            
-            .grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            
-            h3 {
-                font-size: 20px !important;
-                text-align: center;
-                margin: 30px 0 15px !important;
-            }
-            
-            .logo img {
-                height: 40px;
-            }
+        .footer-copy { font-size: 12px; color: var(--text-dim); letter-spacing: 1px; }
+        .footer-copy span { color: var(--gold); }
+
+        /* ── PROGRESS BAR ── */
+        .progress-bar {
+            height: 1px;
+            background: var(--border);
+            position: relative;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width 0.4s ease;
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 900px) {
+            .container { padding: 0 20px; }
+            nav { height: 60px; }
+            .logo { font-size: 22px; }
+            .nav-links { gap: 20px; }
+            .nav-links a { font-size: 11px; letter-spacing: 1px; }
+            .hero { padding: 80px 0 70px; }
+            .hero h1 { font-size: clamp(52px, 16vw, 100px); }
+            .card { flex: 0 0 calc(50% - 10px); }
+            .about-grid { grid-template-columns: 1fr; gap: 40px; }
+            .footer-top { flex-direction: column; gap: 32px; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+        }
+
+        @media (max-width: 540px) {
+            .nav-links { display: none; }
+            .card { flex: 0 0 calc(80% - 10px); }
+            .hero h1 { font-size: clamp(44px, 18vw, 80px); }
         }
     </style>
 </head>
 <body>
+
+    <!-- HEADER -->
     <header>
         <div class="container">
             <nav>
-                <a href="#" class="logo">
-                    <img src="images/логотип.png" alt="Fatmev">
-                </a>
+               <a href="#" class="logo">
+    <img src="логотип.png" alt="Fatmev" style="height:40px;width:auto;filter:brightness(0) invert(1);">
+</a>
                 <ul class="nav-links">
-                    <li><a href="#collection">Коллекция</a></li>
+                    <li><a href="#hits">Хиты</a></li>
+                    <li><a href="#new">Новинки</a></li>
+                    <li><a href="#classic">Классика</a></li>
                     <li><a href="#about">О бренде</a></li>
-                    <li><a href="#lookbook">Lookbook</a></li>
                     <li><a href="#contact">Контакты</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
+    <!-- HERO -->
     <section class="hero">
         <div class="container">
-            <h1>FAT<span>MEV</span></h1>
+            <div class="hero-tag">Dushanbe · SS 2025</div>
+            <h1>FAT<em>MEV</em></h1>
             <p>Возрождаем историю с помощью моды</p>
-            <a href="https://t.me/fatmevv" target="_blank" class="btn">ПЕРЕЙТИ В ТЕЛЕГРАМ</a>
+            <a href="https://t.me/fatmevv" target="_blank" class="btn-primary">
+                <i class="fab fa-telegram"></i> Перейти в Telegram
+            </a>
         </div>
     </section>
 
-    <section id="about" class="about">
+    <!-- ══════════════════════════ ПОПУЛЯРНОЕ ══════════════════════════ -->
+    <section class="popular-section">
         <div class="container">
-            <h2 class="section-title"><span>/</span> О бренде</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Fatmev - это не просто футболки и худи, это искусства где Минимализм, История и Культура объединяются в одно целое!</p>
-                    <p>Мы создаем вещи которые носят историю и характер по сей день</p>
-                </div>
-                <div class="values">
-                    <div class="value-item"><i class="fas fa-check-circle"></i> <span>Качественные материалы</span></div>
-                    <div class="value-item"><i class="fas fa-check-circle"></i> <span>Уникальный дизайн</span></div>
-                    <div class="value-item"><i class="fas fa-check-circle"></i> <span>Ограниченные выпуски</span></div>
-                    <div class="value-item"><i class="fas fa-check-circle"></i> <span>Доставка по всей стране</span></div>
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="section-eyebrow">Выбор покупателей</span>
+                    <h2 class="section-title-big">Популярное</h2>
                 </div>
             </div>
+            <div class="popular-grid">
+                <div class="popular-card popular-card--large">
+                    <div class="popular-img" style="background-image:url('16.jpg')"></div>
+                    <div class="popular-overlay">
+                        <div class="popular-tag">№1</div>
+                        <div class="popular-info">
+                            <div class="popular-name">Somonion</div>
+                            <div class="popular-sub">Fatmev Collection</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popular-card">
+                    <div class="popular-img" style="background-image:url('17.jpg')"></div>
+                    <div class="popular-overlay">
+                        <div class="popular-tag">№2</div>
+                        <div class="popular-info">
+                            <div class="popular-name">Somonion</div>
+                            <div class="popular-sub">Fatmev Collection</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popular-card">
+                    <div class="popular-img" style="background-image:url('18.jpg')"></div>
+                    <div class="popular-overlay">
+                        <div class="popular-tag">№3</div>
+                        <div class="popular-info">
+                            <div class="popular-name">Somonion</div>
+                            <div class="popular-sub">Fatmev Collection</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="collection" class="lookbook">
+    <!-- ══════════════════════════ ХИТЫ ══════════════════════════ -->
+    <section id="hits" class="carousel-section">
         <div class="container">
-            <h2 class="section-title"><span>/</span> Коллекция</h2>
-            <p style="color: #aaa; margin-bottom: 20px;">Чёрный. Белый. Стильный. Культурный.</p>
-
-            <!-- Группа: Chakan white -->
-            <h3 style="color: #c0a080; margin: 40px 0 20px; font-size: 24px;">Chakan white</h3>
-            <div class="grid">
-                <div class="grid-item" style="background-image: url('images/1.PNG');"></div>
-                <div class="grid-item" style="background-image: url('images/2.jpg');"></div>
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="section-eyebrow">01 — Категория</span>
+                    <h2 class="section-title-big">Хиты продаж</h2>
+                </div>
+                <span class="section-count">5 позиций</span>
             </div>
 
-            <!-- Группа: Chakan black -->
-            <h3 style="color: #c0a080; margin: 40px 0 20px; font-size: 24px;">Chakan black</h3>
-            <div class="grid">
-                <div class="grid-item" style="background-image: url('images/3.PNG');"></div>
-                <div class="grid-item" style="background-image: url('images/4.JPG');"></div>
+            <div class="carousel-wrapper" data-carousel="hits">
+                <div class="carousel-track-outer">
+                    <div class="carousel-track">
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('1.PNG')"></div>
+                            <div class="card-badge">Хит</div>
+                            <div class="card-body">
+                                <div class="card-name">Chakan White</div>
+                                <div class="card-sub">Футболка · Белая</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('3.PNG')"></div>
+                            <div class="card-badge">Хит</div>
+                            <div class="card-body">
+                                <div class="card-name">Chakan Black</div>
+                                <div class="card-sub">Футболка · Чёрная</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('13.jpg')"></div>
+                            <div class="card-badge">Хит</div>
+                            <div class="card-body">
+                                <div class="card-name">Ibn Sina</div>
+                                <div class="card-sub">Футболка · Унисекс</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('7.jpg')"></div>
+                            <div class="card-badge">Хит</div>
+                            <div class="card-body">
+                                <div class="card-name">Ismail Somoni</div>
+                                <div class="card-sub">Футболка · Унисекс</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('5.PNG')"></div>
+                            <div class="card-badge">Хит</div>
+                            <div class="card-body">
+                                <div class="card-name">Choy Piyola</div>
+                                <div class="card-sub">Футболка · Унисекс</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-footer">
+                    <div class="carousel-nav">
+                        <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
+                        <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="carousel-dots"></div>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
             </div>
-
-            <!-- Группа: Choy Piyola -->
-            <h3 style="color: #c0a080; margin: 40px 0 20px; font-size: 24px;">Choy Piyola</h3>
-            <div class="grid">
-                <div class="grid-item" style="background-image: url('images/5.PNG');"></div>
-                <div class="grid-item" style="background-image: url('images/6.jpg');"></div>
-            </div>
-
-            <!-- Группа: Ismail Somoni -->
-            <h3 style="color: #c0a080; margin: 40px 0 20px; font-size: 24px;">Ismail Somoni</h3>
-            <div class="grid">
-                <div class="grid-item" style="background-image: url('images/7.jpg');"></div>
-                <div class="grid-item" style="background-image: url('images/8.jpg');"></div>
-            </div>
-
-            <!-- Группа: Sogdiana girl -->
-            <h3 style="color: #c0a080; margin: 40px 0 20px; font-size: 24px;">Sogdiana girl</h3>
-            <div class="grid">
-                <div class="grid-item" style="background-image: url('images/9.jpg');"></div>
-                <div class="grid-item" style="background-image: url('images/10.jpg');"></div>
-            </div>
-
-            <!-- Группа: Tajik girl DJ -->
-            <h3 style="color: #c0a080; margin: 40px 0 20px; font-size: 24px;">Tajik girl DJ</h3>
-            <div class="grid">
-                <div class="grid-item" style="background-image: url('images/11.PNG');"></div>
-                <div class="grid-item" style="background-image: url('images/12.jpg');"></div>
-            </div>
-<!-- Новая группа: Женские футболки (3 шт) -->
-<h3 style="color: #c0a080; margin: 40px 0 20px; font-size: 24px;"></h3>
-<div class="grid">
-    <div class="grid-item" style="background-image: url('images/13.jpg');">
-         <p style="width: 100%; background: rgba(10, 10, 10, 0.8); color: #c0a080; padding: 12px; text-align: center; font-size: 20px; letter-spacing: 1px;">Ibn Sina</p>
-    </div>
-    <div class="grid-item" style="background-image: url('images/14.jpg');">
-        <p style="width: 100%; background: rgba(10, 10, 10, 0.8); color: #c0a080; padding: 12px; text-align: center; font-size: 20px; letter-spacing: 1px;">Doira Duhtar</p>
-    </div>
-    <div class="grid-item" style="background-image: url('images/15.jpg');">
-         <p style="width: 100%; background: rgba(10, 10, 10, 0.8); color: #c0a080; padding: 12px; text-align: center; font-size: 20px; letter-spacing: 1px;">Badahshon</p>
-    </div>
-</div>
         </div>
     </section>
-<footer id="contact">
-    <div class="container">
-        <h2 class="section-title"><span>/</span> Контакты</h2>
-        
-        <div class="social-links">
-            <!-- Telegram (уже есть) -->
-            <a href="https://t.me/fatmevv" target="_blank" class="social-link">
-                <i class="fab fa-telegram"></i>
-                <span>Telegram</span>
-            </a>
-            
-            <!-- Instagram (новый) -->
-            <a href="https://instagram.com/fatmevmerch" target="_blank" class="social-link">
-                <i class="fab fa-instagram"></i>
-                <span>Instagram</span>
-            </a>
-            
-            <!-- TikTok (новый) -->
-            <a href="https://tiktok.com/@fatmev.merch" target="_blank" class="social-link">
-                <i class="fab fa-tiktok"></i>
-                <span>TikTok</span>
-            </a>
-            
+
+    <!-- ══════════════════════════ НОВИНКИ ══════════════════════════ -->
+    <section id="new" class="carousel-section" style="border-top:1px solid var(--border)">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="section-eyebrow">02 — Категория</span>
+                    <h2 class="section-title-big">Новинки</h2>
+                </div>
+                <span class="section-count">4 позиции</span>
+            </div>
+
+            <div class="carousel-wrapper" data-carousel="new">
+                <div class="carousel-track-outer">
+                    <div class="carousel-track">
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('14.jpg')"></div>
+                            <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
+                            <div class="card-body">
+                                <div class="card-name">Doira Duhtar</div>
+                                <div class="card-sub">Женская коллекция</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('15.jpg')"></div>
+                            <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
+                            <div class="card-body">
+                                <div class="card-name">Badahshon</div>
+                                <div class="card-sub">Женская коллекция</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('9.jpg')"></div>
+                            <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
+                            <div class="card-body">
+                                <div class="card-name">Sogdiana Girl</div>
+                                <div class="card-sub">Женская коллекция</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('11.PNG')"></div>
+                            <div class="card-badge" style="background:#fff;color:#080808">Новое</div>
+                            <div class="card-body">
+                                <div class="card-name">Tajik Girl DJ</div>
+                                <div class="card-sub">Женская коллекция</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-footer">
+                    <div class="carousel-nav">
+                        <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
+                        <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="carousel-dots"></div>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+            </div>
         </div>
-        
-        <div class="footer-text">
-            <p>© 2025 FATMEV</p>
-            <p><span>ЗАКАЗЫ: @Fatmevmerch</span></p>
+    </section>
+
+    <!-- ══════════════════════════ КЛАССИКА ══════════════════════════ -->
+    <section id="classic" class="carousel-section" style="border-top:1px solid var(--border)">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="section-eyebrow">03 — Категория</span>
+                    <h2 class="section-title-big">Классика</h2>
+                </div>
+                <span class="section-count">6 позиций</span>
+            </div>
+
+            <div class="carousel-wrapper" data-carousel="classic">
+                <div class="carousel-track-outer">
+                    <div class="carousel-track">
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('2.jpg')"></div>
+                            <div class="card-body">
+                                <div class="card-name">Chakan White II</div>
+                                <div class="card-sub">Архивный выпуск</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('4.JPG')"></div>
+                            <div class="card-body">
+                                <div class="card-name">Chakan Black II</div>
+                                <div class="card-sub">Архивный выпуск</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('6.jpg')"></div>
+                            <div class="card-body">
+                                <div class="card-name">Choy Piyola II</div>
+                                <div class="card-sub">Архивный выпуск</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('8.jpg')"></div>
+                            <div class="card-body">
+                                <div class="card-name">Ismail Somoni II</div>
+                                <div class="card-sub">Архивный выпуск</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('10.jpg')"></div>
+                            <div class="card-body">
+                                <div class="card-name">Sogdiana Girl II</div>
+                                <div class="card-sub">Архивный выпуск</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-img" style="background-image:url('12.jpg')"></div>
+                            <div class="card-body">
+                                <div class="card-name">Tajik Girl DJ II</div>
+                                <div class="card-sub">Архивный выпуск</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-footer">
+                    <div class="carousel-nav">
+                        <button class="carousel-btn prev" aria-label="Назад"><i class="fas fa-arrow-left"></i></button>
+                        <button class="carousel-btn next" aria-label="Вперёд"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="carousel-dots"></div>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+            </div>
         </div>
-    </div>
-</footer>
-    
+    </section>
+
+    <!-- ══════════════════════════ О БРЕНДЕ ══════════════════════════ -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div>
+                    <span class="section-eyebrow" style="display:block;margin-bottom:16px">О бренде</span>
+                    <h2 class="section-title-big" style="margin-bottom:36px;line-height:1.1">История<br>в каждом<br><em style="font-style:normal;color:var(--gold)">стежке</em></h2>
+                    <div class="about-text-block">
+                        <p>Fatmev — это не просто футболки и худи, это искусство, где минимализм, история и культура объединяются в одно целое.</p>
+                        <p>Мы создаём вещи, которые носят историю и характер по сей день.</p>
+                    </div>
+                    <a href="https://t.me/fatmevv" target="_blank" class="btn-primary" style="margin-top:8px">
+                        <i class="fab fa-telegram"></i> Заказать в Telegram
+                    </a>
+                </div>
+                <div class="values-list">
+                    <div class="value-item">
+                        <span class="value-num">01</span>
+                        <span class="value-text">Качественные материалы</span>
+                        <i class="fas fa-check value-icon"></i>
+                    </div>
+                    <div class="value-item">
+                        <span class="value-num">02</span>
+                        <span class="value-text">Уникальный авторский дизайн</span>
+                        <i class="fas fa-check value-icon"></i>
+                    </div>
+                    <div class="value-item">
+                        <span class="value-num">03</span>
+                        <span class="value-text">Ограниченные выпуски</span>
+                        <i class="fas fa-check value-icon"></i>
+                    </div>
+                    <div class="value-item">
+                        <span class="value-num">04</span>
+                        <span class="value-text">Доставка по всей стране</span>
+                        <i class="fas fa-check value-icon"></i>
+                    </div>
+                    <div class="value-item">
+                        <span class="value-num">05</span>
+                        <span class="value-text">История и культура в каждой детали</span>
+                        <i class="fas fa-check value-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+    <a href="#" class="logo">FAT<span>MEV</span></a>
+                    <p>Возрождаем историю с помощью моды. Минимализм. История. Культура.</p>
+                </div>
+                <div>
+                    <div style="font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:16px">Мы в соцсетях</div>
+                    <div class="social-links">
+                        <a href="https://t.me/fatmevv" target="_blank" class="social-link" title="Telegram">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://instagram.com/fatmevmerch" target="_blank" class="social-link" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://tiktok.com/@fatmev.merch" target="_blank" class="social-link" title="TikTok">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-copy">© 2025 FATMEV · Все права защищены</div>
+                <div class="footer-copy">Заказы: <span>@Fatmevmerch</span></div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+    const track = wrapper.querySelector('.carousel-track');
+    const outer = wrapper.querySelector('.carousel-track-outer');
+    const prevBtn = wrapper.querySelector('.prev');
+    const nextBtn = wrapper.querySelector('.next');
+    const dotsContainer = wrapper.querySelector('.carousel-dots');
+    const progressFill = wrapper.querySelector('.progress-fill');
+
+    let cards = track.querySelectorAll('.card');
+    let perPage = getPerPage();
+    let total = cards.length;
+    let current = 0;
+    let isDragging = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let dragDelta = 0;
+
+    function getPerPage() {
+        return window.innerWidth <= 540 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+    }
+
+    function getMaxIndex() {
+        return Math.max(0, total - perPage);
+    }
+
+    function getSteps() {
+        const steps = [];
+        for (let i = 0; i <= getMaxIndex(); i++) steps.push(i);
+        return steps;
+    }
+
+    // Build dots
+    function buildDots() {
+        dotsContainer.innerHTML = '';
+        const steps = getSteps();
+        steps.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goTo(i));
+            dotsContainer.appendChild(dot);
+        });
+    }
+
+    function updateDots() {
+        dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === current);
+        });
+    }
+
+    function getCardWidth() {
+        if (cards.length === 0) return 0;
+        return cards[0].getBoundingClientRect().width + 20; // +gap
+    }
+
+    function goTo(index) {
+        const maxIndex = getMaxIndex();
+        current = Math.max(0, Math.min(index, maxIndex));
+        const offset = current * getCardWidth();
+        track.style.transform = `translateX(-${offset}px)`;
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current >= maxIndex;
+        updateDots();
+        // progress
+        const pct = maxIndex === 0 ? 100 : Math.round(((current + perPage) / total) * 100);
+        if (progressFill) progressFill.style.width = pct + '%';
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    // Touch / drag support
+    outer.addEventListener('touchstart', e => {
+        startX = e.touches[0].pageX;
+        dragDelta = 0;
+    }, { passive: true });
+
+    outer.addEventListener('touchmove', e => {
+        dragDelta = e.touches[0].pageX - startX;
+    }, { passive: true });
+
+    outer.addEventListener('touchend', () => {
+        if (dragDelta < -50) goTo(current + 1);
+        else if (dragDelta > 50) goTo(current - 1);
+    });
+
+    // Mouse drag
+    outer.addEventListener('mousedown', e => {
+        isDragging = true;
+        startX = e.pageX;
+        dragDelta = 0;
+        track.style.transition = 'none';
+    });
+
+    window.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        dragDelta = e.pageX - startX;
+    });
+
+    window.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        track.style.transition = '';
+        if (dragDelta < -60) goTo(current + 1);
+        else if (dragDelta > 60) goTo(current - 1);
+        else goTo(current); // snap back
+    });
+
+    // Init
+    buildDots();
+    goTo(0);
+
+    // Recalc on resize
+    window.addEventListener('resize', () => {
+        const newPer = getPerPage();
+        if (newPer !== perPage) {
+            perPage = newPer;
+            buildDots();
+            goTo(Math.min(current, getMaxIndex()));
+        }
+    });
+});
+</script>
+
 </body>
-
 </html>
