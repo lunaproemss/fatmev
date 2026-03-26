@@ -1741,23 +1741,7 @@
 </div>
 
 <!-- ══════════════════════════════════════════
-     SUCCESS MODAL
-═══════════════════════════════════════════ -->
-<div class="success-overlay" id="success-overlay">
-    <div class="success-modal">
-        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-        <h3>Заказ принят!</h3>
-        <p>Спасибо за заказ. Мы свяжемся с вами в ближайшее время для подтверждения.<br><br>
-        Также можете написать нам напрямую в <strong style="color:var(--gold)">@Fatmevmerch</strong></p>
-        <button class="btn-primary" onclick="closeSuccess()" style="width:100%;justify-content:center">
-            <i class="fas fa-arrow-left"></i> Продолжить покупки
-        </button>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     SBP MODAL — С РЕКВИЗИТАМИ
-     ⚠️ Вставьте свои реквизиты в data-card и data-bank ниже
+     SBP MODAL — С РЕКВИЗИТАМИ (БЕЗ ПОЛУЧАТЕЛЯ)
 ═══════════════════════════════════════════ -->
 <div class="order-overlay" id="sbp-modal" style="display:none;">
     <div class="sbp-modal">
@@ -1770,19 +1754,12 @@
         <div class="sbp-requisites">
             <div class="sbp-req-row">
                 <span class="sbp-req-label">Номер карты</span>
-                <!-- ⚠️ ЗАМЕНИТЕ на свой номер карты -->
                 <span class="sbp-req-value" id="sbp-card-display">2200 7007 3620 2209</span>
                 <button class="sbp-copy-btn" onclick="copyText('2200700736202209', this)" title="Скопировать"><i class="fas fa-copy"></i></button>
             </div>
             <div class="sbp-req-row">
                 <span class="sbp-req-label">Банк</span>
-                <!-- ⚠️ ЗАМЕНИТЕ на свой банк -->
                 <span class="sbp-req-value">Сбербанк</span>
-            </div>
-            <div class="sbp-req-row">
-                <span class="sbp-req-label">Получатель</span>
-                <!-- ⚠️ ЗАМЕНИТЕ на своё имя -->
-                <span class="sbp-req-value">Маликов А. Д.</span>
             </div>
             <div class="sbp-req-row sbp-req-highlight">
                 <span class="sbp-req-label">Сумма</span>
@@ -1798,7 +1775,7 @@
 
         <div class="sbp-divider"><span>или QR-код</span></div>
         <div class="sbp-qr-box"><img id="sbp-qr-img" alt="SBP QR"></div>
-        <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:6px;letter-spacing:1px">QR-код содержит данные заказа</p>
+        <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:6px;letter-spacing:1px">QR-код содержит ссылку на оплату</p>
 
         <button class="btn-primary" style="width:100%;justify-content:center;margin-top:20px;padding:15px" onclick="confirmPayment()">
             <i class="fas fa-check" style="margin-right:8px"></i> Я оплатил
@@ -2798,7 +2775,8 @@ function openSbpModal(order) {
     currentPaymentOrderId = order.id;
     document.getElementById('sbp-amount').textContent = formatPrice(order.total);
     document.getElementById('sbp-order-id').textContent = order.id;
-    const data = `Оплата заказа ${order.id} на сумму ${formatPrice(order.total)}`;
+    const payUrl = 'https://www.tinkoff.ru/rm/r_UFLfCEWkNM.AAMaJCIFtn/HhdYX43282';
+const data = payUrl;
     document.getElementById('sbp-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(data)}`;
     const modal = document.getElementById('sbp-modal');
     modal.style.display = 'flex';
