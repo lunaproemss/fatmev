@@ -223,6 +223,25 @@
             transform: translateY(-2px);
         }
 
+        /* NEW: btn-secondary */
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: transparent;
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
         /* ═══════════════════════════════════════════
            SECTION HEADERS & COMMON
         ═══════════════════════════════════════════ */
@@ -1187,18 +1206,92 @@
             margin-bottom: 32px;
         }
 
+        /* ═══════════════════════════════════════════
+           SBP MODAL — UPDATED WITH REQUISITES
+        ═══════════════════════════════════════════ */
         .sbp-modal {
             background: var(--bg2);
             border: 1px solid var(--border);
             width: 100%;
-            max-width: 520px;
-            padding: 28px;
-            text-align: center;
+            max-width: 500px;
+            padding: 36px 32px 28px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .sbp-modal::-webkit-scrollbar { width: 4px; }
+        .sbp-modal::-webkit-scrollbar-track { background: var(--bg); }
+        .sbp-modal::-webkit-scrollbar-thumb { background: var(--border); }
+
+        /* Requisites block */
+        .sbp-requisites {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .sbp-req-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .sbp-req-row:last-child { border-bottom: none; }
+        .sbp-req-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            min-width: 120px;
+            flex-shrink: 0;
+        }
+        .sbp-req-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+            flex: 1;
+            letter-spacing: 0.5px;
+        }
+        .sbp-req-highlight { background: rgba(192,160,128,0.05); }
+        .sbp-req-highlight .sbp-req-value { color: var(--gold); font-size: 20px; }
+        .sbp-copy-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 11px;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .sbp-copy-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .sbp-copy-btn.copied { border-color: #6dd28a; color: #6dd28a; }
+
+        .sbp-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0 6px;
+            color: var(--text-dim);
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .sbp-divider::before, .sbp-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
         }
         .sbp-qr-box {
-            width: 240px;
-            height: 240px;
-            margin: 14px auto;
+            width: 180px;
+            height: 180px;
+            margin: 8px auto;
             border: 1px solid var(--border);
             background: #fff;
             display: flex;
@@ -1489,6 +1582,8 @@
             .order-modal { padding: 28px 24px; }
             .admin-order-info { grid-template-columns: 1fr 1fr; }
             .admin-stats { grid-template-columns: 1fr; }
+            .sbp-modal { padding: 28px 20px 24px; }
+            .sbp-req-label { min-width: 100px; }
         }
 
         @media (max-width: 540px) {
@@ -1499,6 +1594,8 @@
             .popular-card--large { grid-column: 1; grid-row: 1; }
             .popular-card--large .popular-img { aspect-ratio: 3/2; }
             .admin-order-info { grid-template-columns: 1fr; }
+            .sbp-req-row { flex-wrap: wrap; gap: 6px; }
+            .sbp-req-label { min-width: unset; width: 100%; margin-bottom: 2px; }
         }
     </style>
 <base target="_blank">
@@ -1658,17 +1755,55 @@
     </div>
 </div>
 
+<!-- ══════════════════════════════════════════
+     SBP MODAL — С РЕКВИЗИТАМИ
+     ⚠️ Вставьте свои реквизиты в data-card и data-bank ниже
+═══════════════════════════════════════════ -->
 <div class="order-overlay" id="sbp-modal" style="display:none;">
     <div class="sbp-modal">
-        <h3 style="font-family:'Cormorant Garamond',serif;font-size:30px;letter-spacing:2px;margin-bottom:8px">ОПЛАТА СБП</h3>
-        <p class="order-sub" style="margin-bottom:10px">Отсканируйте QR-код для оплаты</p>
-        <div class="sbp-qr-box"><img id="sbp-qr-img" alt="SBP QR"></div>
-        <div class="sbp-meta">Сумма: <b id="sbp-amount">0 ₽</b></div>
-        <div class="sbp-meta">Номер заказа: <b id="sbp-order-id">—</b></div>
-        <div style="display:flex;gap:10px;margin-top:18px">
-            <button class="btn-secondary" onclick="closeSbpModal()">Закрыть</button>
-            <button class="btn-primary" style="flex:1;justify-content:center" onclick="confirmPayment()">Я оплатил</button>
+        <button class="order-modal-close" onclick="closeSbpModal()"><i class="fas fa-times"></i></button>
+
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:30px;letter-spacing:2px;margin-bottom:4px">ОПЛАТА</h3>
+        <p style="font-size:12px;color:var(--text-dim);letter-spacing:0.5px;margin-bottom:20px">Переведите точную сумму по реквизитам ниже</p>
+
+        <!-- ══ РЕКВИЗИТЫ ══════════════════════════════════════ -->
+        <div class="sbp-requisites">
+            <div class="sbp-req-row">
+                <span class="sbp-req-label">Номер карты</span>
+                <!-- ⚠️ ЗАМЕНИТЕ на свой номер карты -->
+                <span class="sbp-req-value" id="sbp-card-display">2200 7007 3620 2209</span>
+                <button class="sbp-copy-btn" onclick="copyText('2200700736202209', this)" title="Скопировать"><i class="fas fa-copy"></i></button>
+            </div>
+            <div class="sbp-req-row">
+                <span class="sbp-req-label">Банк</span>
+                <!-- ⚠️ ЗАМЕНИТЕ на свой банк -->
+                <span class="sbp-req-value">Сбербанк</span>
+            </div>
+            <div class="sbp-req-row">
+                <span class="sbp-req-label">Получатель</span>
+                <!-- ⚠️ ЗАМЕНИТЕ на своё имя -->
+                <span class="sbp-req-value">Маликов А. Д.</span>
+            </div>
+            <div class="sbp-req-row sbp-req-highlight">
+                <span class="sbp-req-label">Сумма</span>
+                <span class="sbp-req-value" id="sbp-amount">0 ₽</span>
+                <button class="sbp-copy-btn" id="sbp-amount-copy-btn" onclick="copySbpAmount(this)" title="Скопировать сумму"><i class="fas fa-copy"></i></button>
+            </div>
+            <div class="sbp-req-row">
+                <span class="sbp-req-label">Заказ №</span>
+                <span class="sbp-req-value" id="sbp-order-id">—</span>
+            </div>
         </div>
+        <!-- ══════════════════════════════════════════════════ -->
+
+        <div class="sbp-divider"><span>или QR-код</span></div>
+        <div class="sbp-qr-box"><img id="sbp-qr-img" alt="SBP QR"></div>
+        <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:6px;letter-spacing:1px">QR-код содержит данные заказа</p>
+
+        <button class="btn-primary" style="width:100%;justify-content:center;margin-top:20px;padding:15px" onclick="confirmPayment()">
+            <i class="fas fa-check" style="margin-right:8px"></i> Я оплатил
+        </button>
+        <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:10px">После оплаты нажмите кнопку — мы получим уведомление</p>
     </div>
 </div>
 
@@ -2206,7 +2341,6 @@
                     <span class="value-text">Бесплатная доставка по всей России</span>
                     <i class="fas fa-check value-icon"></i>
                 </div>
-
             </div>
         </div>
     </div>
@@ -2247,23 +2381,17 @@
 <script>
 /* ════════════════════════════════════════════════════════
    КОНФИГУРАЦИЯ УВЕДОМЛЕНИЙ
-   Заполните свои данные перед запуском
 ════════════════════════════════════════════════════════ */
 const NOTIFICATIONS_CONFIG = {
-    // TELEGRAM: Вставьте токен бота и chat_id
     telegram: {
-        enabled: true,                     // ← сменить на true после заполнения
-        botToken: '8663633039:AAEoRjFP66rotfNPCt3yz331jXi7Pm09V7w',    // ← токен бота от @BotFather
-        chatId: '8395850715'         // ← ваш chat_id
+        enabled: true,
+        botToken: '8663633039:AAEoRjFP66rotfNPCt3yz331jXi7Pm09V7w',
+        chatId: '8395850715'
     },
-
-    // GOOGLE SHEETS: Вставьте URL вашего Apps Script Web App
     googleSheets: {
-        enabled: true,                     // ← сменить на true после настройки
-        webAppUrl: 'https://docs.google.com/spreadsheets/d/10vBo1iflOgHRvqkG4FCaLOo6xWM1F7gNww-1rGq_7hw/edit?usp=drivesdk' // ← URL из Google Apps Script
+        enabled: true,
+        webAppUrl: 'https://docs.google.com/spreadsheets/d/10vBo1iflOgHRvqkG4FCaLOo6xWM1F7gNww-1rGq_7hw/edit?usp=drivesdk'
     },
-
-    // MAIL.RU / EMAIL: Вставьте URL вашего почтового сервиса (например, formspree.io)
     email: {
         enabled: false,
         serviceUrl: 'malikov.ardasher@mail.ru'
@@ -2273,14 +2401,11 @@ const NOTIFICATIONS_CONFIG = {
 /* ════════════════════════════════════════════════════════
    КОРЗИНА — ЛОГИКА
 ════════════════════════════════════════════════════════ */
-
-// Загружаем корзину из localStorage (сохраняется между сессиями)
 let cart = JSON.parse(localStorage.getItem('fatmev_cart') || '[]');
 let currentPaymentOrderId = null;
 let editingProductId = null;
 let products = JSON.parse(localStorage.getItem('fatmev_products') || 'null');
 
-/** Сохраняет корзину в localStorage */
 function saveCart() {
     localStorage.setItem('fatmev_cart', JSON.stringify(cart));
 }
@@ -2293,7 +2418,6 @@ function uid(prefix) {
     return `${prefix}-${Date.now().toString(36)}-${Math.floor(Math.random() * 900 + 100)}`;
 }
 
-/** Добавляет товар в корзину */
 function addToCart(product) {
     const existing = cart.find(i => i.id === product.id);
     if (existing) {
@@ -2306,7 +2430,6 @@ function addToCart(product) {
     showToast(`${product.name} добавлен в корзину`);
 }
 
-/** Удаляет товар из корзины */
 function removeFromCart(id) {
     cart = cart.filter(i => i.id !== id);
     saveCart();
@@ -2314,7 +2437,6 @@ function removeFromCart(id) {
     renderCartItems();
 }
 
-/** Изменяет количество товара */
 function changeQty(id, delta) {
     const item = cart.find(i => i.id === id);
     if (!item) return;
@@ -2324,17 +2446,14 @@ function changeQty(id, delta) {
     renderCartItems();
 }
 
-/** Считает общую сумму */
 function getCartTotal() {
     return cart.reduce((sum, i) => sum + i.price * i.qty, 0);
 }
 
-/** Считает общее количество товаров */
 function getCartCount() {
     return cart.reduce((sum, i) => sum + i.qty, 0);
 }
 
-/** Обновляет счётчик в шапке */
 function updateCartUI() {
     const count = getCartCount();
     const countEl = document.getElementById('cart-count');
@@ -2342,7 +2461,6 @@ function updateCartUI() {
     countEl.classList.toggle('visible', count > 0);
 }
 
-/** Рендерит список товаров в корзине */
 function renderCartItems() {
     const list = document.getElementById('cart-items-list');
     const footer = document.getElementById('cart-footer');
@@ -2383,6 +2501,10 @@ function renderCartItems() {
     `).join('');
 }
 
+/* ════════════════════════════════════════════════════════
+   ПАРСИНГ ТОВАРОВ ИЗ HTML (первый запуск)
+   ⚡ FIX: используем #carpet .carousel-track .card
+════════════════════════════════════════════════════════ */
 function parseInitialProductsFromHtml() {
     const list = [];
     const addFromCards = (selector, category) => {
@@ -2410,7 +2532,8 @@ function parseInitialProductsFromHtml() {
         });
     };
 
-    addFromCards('#carpet .popular-card', 'carpet');
+    // ⚡ FIX: Ковры теперь используют carousel-track .card (единый формат)
+    addFromCards('#carpet .carousel-track .card', 'carpet');
     addFromCards('#hits .carousel-track .card', 'hits');
     addFromCards('#new .carousel-track .card', 'new');
     addFromCards('#classic .carousel-track .card', 'classic');
@@ -2424,7 +2547,6 @@ function getVisibleProducts(category) {
 /* ════════════════════════════════════════════════════════
    УПРАВЛЕНИЕ МОДАЛКАМИ
 ════════════════════════════════════════════════════════ */
-
 function openCart() {
     document.getElementById('cart-overlay').classList.add('open');
     renderCartItems();
@@ -2461,7 +2583,6 @@ function closeSuccess() {
     document.body.style.overflow = '';
 }
 
-/** Рендерит сводку заказа в форме */
 function renderOrderSummary() {
     const block = document.getElementById('order-summary-block');
     const itemsHtml = cart.map(i =>
@@ -2492,11 +2613,15 @@ function esc(s = '') {
     return String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 }
 
+/* ════════════════════════════════════════════════════════
+   РЕНДЕР ТОВАРОВ НА САЙТ
+   ⚡ FIX: Ковры теперь рендерятся в carousel-track
+════════════════════════════════════════════════════════ */
 function renderProductsToSite() {
     const buildCard = (p) => `
         <div class="card">
             <div class="card-img" style="background-image:url('${esc(p.img)}')"></div>
-            ${p.badge ? `<div class="card-badge"${p.category === 'new' ? ' style="background:#fff;color:#080808"' : ''}>${esc(p.badge)}</div>` : ''}
+            ${p.badge ? `<div class="card-badge"${p.category === 'new' ? ' style="background:#fff;color:#080808"' : (p.category === 'carpet' ? ' style="background:var(--gold);color:#000"' : '')}>${esc(p.badge)}</div>` : ''}
             <div class="card-body">
                 <div class="card-name">${esc(p.name)}</div>
                 <div class="card-sub">${esc(p.sub)}</div>
@@ -2515,40 +2640,29 @@ function renderProductsToSite() {
     const hitsTrack = document.querySelector('#hits .carousel-track');
     const newTrack = document.querySelector('#new .carousel-track');
     const classicTrack = document.querySelector('#classic .carousel-track');
-    const carpetGrid = document.querySelector('#carpet .popular-grid');
+    const carpetTrack = document.querySelector('#carpet .carousel-track');
 
     if (hitsTrack) hitsTrack.innerHTML = getVisibleProducts('hits').map(buildCard).join('');
     if (newTrack) newTrack.innerHTML = getVisibleProducts('new').map(buildCard).join('');
     if (classicTrack) classicTrack.innerHTML = getVisibleProducts('classic').map(buildCard).join('');
+    if (carpetTrack) carpetTrack.innerHTML = getVisibleProducts('carpet').map(p => buildCard({...p, badge: p.badge || 'Редкая'})).join('');
 
-    if (carpetGrid) {
-        const carpets = getVisibleProducts('carpet');
-        carpetGrid.innerHTML = carpets.map((p, i) => `
-            <div class="popular-card ${i === 0 ? 'popular-card--large' : ''}">
-                <div class="popular-img" style="background-image:url('${esc(p.img)}')"></div>
-                <div class="popular-overlay">
-                    <div class="popular-tag">${esc(p.badge || 'РЕДКАЯ')}</div>
-                    <div class="popular-info">
-                        <div class="popular-name">${esc(p.name)}</div>
-                        <div class="popular-sub">${esc(p.sub)}</div>
-                        <div class="price-row">
-                            <span class="price-new">${formatPrice(p.price)}</span>
-                            ${p.oldPrice ? `<span class="price-old">${formatPrice(p.oldPrice)}</span>` : ''}
-                        </div>
-                        <button class="popular-add-btn" onclick="addToCart({id:'${esc(p.id)}',name:'${esc(p.name)}',sub:'${esc(p.sub)}',img:'${esc(p.img)}',price:${p.price},oldPrice:${p.oldPrice || 0}})">
-                            <i class="fas fa-plus"></i> В корзину
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
+    // Обновляем счётчики в заголовках секций
+    ['carpet', 'hits', 'new', 'classic'].forEach(cat => {
+        const sec = document.getElementById(cat);
+        if (!sec) return;
+        const count = getVisibleProducts(cat).length;
+        const countEl = sec.querySelector('.section-count');
+        if (countEl && count >= 0) {
+            const word = count === 1 ? 'позиция' : (count < 5 ? 'позиции' : 'позиций');
+            countEl.textContent = count + ' ' + word;
+        }
+    });
 }
 
 /* ════════════════════════════════════════════════════════
    ОФОРМЛЕНИЕ ЗАКАЗА
 ════════════════════════════════════════════════════════ */
-
 function submitOrder() {
     const name    = document.getElementById('order-name').value.trim();
     const phone   = document.getElementById('order-phone').value.trim();
@@ -2556,7 +2670,6 @@ function submitOrder() {
     const size    = document.querySelector('.size-btn.selected')?.dataset.size || 'M';
     const comment = document.getElementById('order-comment').value.trim();
 
-    // Валидация
     if (!name)    { showToast('Введите имя', 'error');    return; }
     if (!phone)   { showToast('Введите телефон', 'error'); return; }
     if (!address) { showToast('Введите адрес', 'error');   return; }
@@ -2565,7 +2678,6 @@ function submitOrder() {
     btn.disabled = true;
     btn.textContent = 'Отправляем...';
 
-    // Формируем объект заказа
     const order = {
         id:      'FAT-' + Date.now().toString().slice(-5),
         date:    new Date().toLocaleString('ru-RU'),
@@ -2579,24 +2691,19 @@ function submitOrder() {
         paid:    false
     };
 
-    // Сохраняем в localStorage
     const orders = JSON.parse(localStorage.getItem('fatmev_orders') || '[]');
     orders.unshift(order);
     localStorage.setItem('fatmev_orders', JSON.stringify(orders));
 
-    // Отправляем уведомления (асинхронно, не блокируем пользователя)
     sendNotifications(order);
 
-    // Очищаем корзину
     cart = [];
     saveCart();
     updateCartUI();
 
-    // Закрываем форму, показываем успех
     btn.disabled = false;
     btn.innerHTML = '<i class="fas fa-check" style="margin-right:8px"></i> Отправить заказ';
 
-    // Сбрасываем поля
     document.getElementById('order-name').value    = '';
     document.getElementById('order-phone').value   = '';
     document.getElementById('order-address').value = '';
@@ -2607,9 +2714,8 @@ function submitOrder() {
 }
 
 /* ════════════════════════════════════════════════════════
-   УВЕДОМЛЕНИЯ (заглушки — настраиваются в NOTIFICATIONS_CONFIG)
+   УВЕДОМЛЕНИЯ
 ════════════════════════════════════════════════════════ */
-
 async function sendNotifications(order) {
     const itemsList = order.items.map(i => `  • ${i.name} × ${i.qty} = ${formatPrice(i.price * i.qty)}`).join('\n');
     const message = `
@@ -2631,7 +2737,6 @@ ${itemsList}
 
     console.log('=== НОВЫЙ ЗАКАЗ ===', order);
 
-    // — Telegram Bot —
     if (NOTIFICATIONS_CONFIG.telegram.enabled) {
         try {
             await fetch(`https://api.telegram.org/bot${NOTIFICATIONS_CONFIG.telegram.botToken}/sendMessage`, {
@@ -2643,15 +2748,11 @@ ${itemsList}
                     parse_mode: 'HTML'
                 })
             });
-            console.log('✅ Telegram: уведомление отправлено');
         } catch (e) {
             console.error('❌ Telegram ошибка:', e);
         }
-    } else {
-        console.log('[ЗАГЛУШКА] Telegram:', message);
     }
 
-    // — Google Sheets —
     if (NOTIFICATIONS_CONFIG.googleSheets.enabled) {
         try {
             await fetch(NOTIFICATIONS_CONFIG.googleSheets.webAppUrl, {
@@ -2669,15 +2770,11 @@ ${itemsList}
                     total:    order.total
                 })
             });
-            console.log('✅ Google Sheets: данные отправлены');
         } catch (e) {
             console.error('❌ Google Sheets ошибка:', e);
         }
-    } else {
-        console.log('[ЗАГЛУШКА] Google Sheets: данные были бы записаны');
     }
 
-    // — Email (Mail.ru / Formspree) —
     if (NOTIFICATIONS_CONFIG.email.enabled) {
         try {
             await fetch(NOTIFICATIONS_CONFIG.email.serviceUrl, {
@@ -2688,25 +2785,21 @@ ${itemsList}
                     message
                 })
             });
-            console.log('✅ Email: уведомление отправлено');
         } catch (e) {
             console.error('❌ Email ошибка:', e);
         }
-    } else {
-        console.log('[ЗАГЛУШКА] Email: письмо было бы отправлено');
     }
 }
 
-function buildSbpLink(order) {
-    return `https://example.com/sbp-pay?amount=${order.total}&order=${encodeURIComponent(order.id)}`;
-}
-
+/* ════════════════════════════════════════════════════════
+   СБП МОДАЛ
+════════════════════════════════════════════════════════ */
 function openSbpModal(order) {
     currentPaymentOrderId = order.id;
     document.getElementById('sbp-amount').textContent = formatPrice(order.total);
     document.getElementById('sbp-order-id').textContent = order.id;
     const data = `Оплата заказа ${order.id} на сумму ${formatPrice(order.total)}`;
-    document.getElementById('sbp-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data)}`;
+    document.getElementById('sbp-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(data)}`;
     const modal = document.getElementById('sbp-modal');
     modal.style.display = 'flex';
     modal.classList.add('open');
@@ -2735,11 +2828,8 @@ async function confirmPayment() {
 }
 
 async function sendPaymentToTelegram(order) {
-    const text = `✅ Оплата СБП\nID: ${order.id}\nСумма: ${formatPrice(order.total)}\nВремя: ${order.paidAt || '-'}`;
-    if (!NOTIFICATIONS_CONFIG.telegram.enabled) {
-        console.log('[ЗАГЛУШКА] Telegram payment:', text);
-        return;
-    }
+    const text = `✅ Оплата\nID: ${order.id}\nСумма: ${formatPrice(order.total)}\nВремя: ${order.paidAt || '-'}`;
+    if (!NOTIFICATIONS_CONFIG.telegram.enabled) return;
     try {
         await fetch(`https://api.telegram.org/bot${NOTIFICATIONS_CONFIG.telegram.botToken}/sendMessage`, {
             method: 'POST',
@@ -2754,7 +2844,6 @@ async function sendPaymentToTelegram(order) {
 /* ════════════════════════════════════════════════════════
    ADMIN PANEL
 ════════════════════════════════════════════════════════ */
-
 function openAdmin() {
     const panel = document.getElementById('admin-panel');
     panel.classList.add('open');
@@ -2765,14 +2854,12 @@ function openAdmin() {
 function closeAdmin() {
     document.getElementById('admin-panel').classList.remove('open');
     document.body.style.overflow = '';
-    // Убираем #admin из URL
     history.pushState('', document.title, window.location.pathname);
 }
 
 function renderAdminPanel() {
     const orders = JSON.parse(localStorage.getItem('fatmev_orders') || '[]');
 
-    // Статистика
     const totalRevenue = orders.reduce((s, o) => s + o.total, 0);
     const paidRevenue = orders.filter(o => o.paid).reduce((s, o) => s + o.total, 0);
     document.getElementById('admin-stats').innerHTML = `
@@ -2789,7 +2876,6 @@ function renderAdminPanel() {
             <div class="admin-stat-value">${orders.length ? formatPrice(Math.round(totalRevenue / orders.length)) : '—'}</div>
         </div>`;
 
-    // Список заказов
     const list = document.getElementById('admin-orders-list');
     if (orders.length === 0) {
         list.innerHTML = `
@@ -2797,57 +2883,56 @@ function renderAdminPanel() {
                 <i class="fas fa-box-open"></i>
                 <p>Заказов пока нет</p>
             </div>`;
-        return;
+    } else {
+        list.innerHTML = orders.map(order => {
+            const itemsHtml = order.items.map(i =>
+                `<div class="admin-order-item">
+                    <span>${i.name} × ${i.qty}</span>
+                    <span>${formatPrice(i.price * i.qty)}</span>
+                </div>`
+            ).join('');
+
+            return `
+            <div class="admin-order-card">
+                <div class="admin-order-header">
+                    <div>
+                        <div class="admin-order-id">${order.id}</div>
+                        <div class="admin-order-date">${order.date}</div>
+                        <div style="margin-top:8px;font-size:11px;color:${order.paid ? '#6dd28a' : 'var(--text-dim)'}">${order.paid ? '✅ Оплачен' : '⏳ Не оплачен'}</div>
+                    </div>
+                    <div class="admin-order-total">${formatPrice(order.total)}</div>
+                </div>
+                <div class="admin-order-info">
+                    <div class="admin-order-field">
+                        <label>Покупатель</label>
+                        <span>${order.name}</span>
+                    </div>
+                    <div class="admin-order-field">
+                        <label>Телефон</label>
+                        <span>${order.phone}</span>
+                    </div>
+                    <div class="admin-order-field">
+                        <label>Размер</label>
+                        <span>${order.size || '—'}</span>
+                    </div>
+                    <div class="admin-order-field">
+                        <label>Статус</label>
+                        <span style="color:${order.paid ? '#6dd28a' : 'var(--text-dim)'}">${order.paid ? 'Оплачен' : 'Не оплачен'}</span>
+                    </div>
+                </div>
+                <div class="admin-order-field" style="margin-bottom:12px">
+                    <label style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:4px">Адрес доставки</label>
+                    <span style="font-size:14px;color:var(--text)">${order.address}</span>
+                </div>
+                ${order.comment ? `<div class="admin-order-field" style="margin-bottom:12px">
+                    <label style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:4px">Комментарий</label>
+                    <span style="font-size:14px;color:var(--text-dim)">${order.comment}</span>
+                </div>` : ''}
+                <div class="admin-order-items">${itemsHtml}</div>
+                ${order.paid ? '' : `<div style="display:flex;justify-content:flex-end;gap:8px"><button class="admin-mini-btn" onclick="markOrderPaidByAdmin('${order.id}')">Пометить оплачен</button></div>`}
+            </div>`;
+        }).join('');
     }
-
-    list.innerHTML = orders.map(order => {
-        const itemsHtml = order.items.map(i =>
-            `<div class="admin-order-item">
-                <span>${i.name} × ${i.qty}</span>
-                <span>${formatPrice(i.price * i.qty)}</span>
-            </div>`
-        ).join('');
-
-        return `
-        <div class="admin-order-card">
-            <div class="admin-order-header">
-                <div>
-                    <div class="admin-order-id">${order.id}</div>
-                    <div class="admin-order-date">${order.date}</div>
-                    <div style="margin-top:8px;font-size:11px;color:${order.paid ? '#6dd28a' : 'var(--text-dim)'}">${order.paid ? 'Оплачен' : 'Не оплачен'}</div>
-                </div>
-                <div class="admin-order-total">${formatPrice(order.total)}</div>
-            </div>
-            <div class="admin-order-info">
-                <div class="admin-order-field">
-                    <label>Покупатель</label>
-                    <span>${order.name}</span>
-                </div>
-                <div class="admin-order-field">
-                    <label>Телефон</label>
-                    <span>${order.phone}</span>
-                </div>
-                <div class="admin-order-field">
-                    <label>Размер</label>
-                    <span>${order.size || '—'}</span>
-                </div>
-                <div class="admin-order-field">
-                    <label>Статус</label>
-                    <span style="color:${order.paid ? '#6dd28a' : 'var(--text-dim)'}">${order.paid ? 'Оплачен' : 'Не оплачен'}</span>
-                </div>
-            </div>
-            <div class="admin-order-field" style="margin-bottom:12px">
-                <label style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:4px">Адрес доставки</label>
-                <span style="font-size:14px;color:var(--text)">${order.address}</span>
-            </div>
-            ${order.comment ? `<div class="admin-order-field" style="margin-bottom:12px">
-                <label style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:4px">Комментарий</label>
-                <span style="font-size:14px;color:var(--text-dim)">${order.comment}</span>
-            </div>` : ''}
-            <div class="admin-order-items">${itemsHtml}</div>
-            ${order.paid ? '' : `<div style="display:flex;justify-content:flex-end;gap:8px"><button class="admin-mini-btn" onclick="markOrderPaidByAdmin('${order.id}')">Пометить оплачен</button></div>`}
-        </div>`;
-    }).join('');
 
     renderProductsAdmin();
 }
@@ -2904,6 +2989,7 @@ function saveProduct() {
     renderProductsToSite();
     renderProductsAdmin();
     reinitCarousels();
+    showToast(`Товар "${p.name}" сохранён`);
 }
 
 function editProduct(id) {
@@ -2919,9 +3005,12 @@ function editProduct(id) {
     document.getElementById('p-badge').value = p.badge || '';
     document.getElementById('p-visible').checked = p.visible !== false;
     document.getElementById('p-save-btn').textContent = 'Сохранить изменения';
+    // Scroll to form
+    document.querySelector('.admin-product-form').scrollIntoView({ behavior: 'smooth' });
 }
 
 function deleteProduct(id) {
+    if (!confirm('Удалить товар?')) return;
     products = products.filter(p => p.id !== id);
     cart = cart.filter(c => c.id !== id);
     saveCart();
@@ -2930,6 +3019,7 @@ function deleteProduct(id) {
     renderProductsToSite();
     renderProductsAdmin();
     reinitCarousels();
+    showToast('Товар удалён');
 }
 
 function toggleProduct(id) {
@@ -2940,6 +3030,7 @@ function toggleProduct(id) {
     renderProductsToSite();
     renderProductsAdmin();
     reinitCarousels();
+    showToast(p.visible ? 'Товар показан' : 'Товар скрыт');
 }
 
 function renderProductsAdmin() {
@@ -2949,231 +3040,252 @@ function renderProductsAdmin() {
         wrap.innerHTML = `<div class="admin-empty"><i class="fas fa-box-open"></i><p>Товаров пока нет</p></div>`;
         return;
     }
-    wrap.innerHTML = products.map(p => `
-        <div class="admin-product-item">
-            <div class="admin-product-thumb" style="background-image:url('${esc(p.img)}')"></div>
-            <div>
-                <div style="font-family:'Cormorant Garamond',serif;font-size:18px">${esc(p.name)}</div>
-                <div style="font-size:11px;color:var(--text-dim)">${esc(p.sub)} · ${esc(p.category)} · ${p.visible !== false ? 'видим' : 'скрыт'}</div>
-                <div style="font-size:12px;color:var(--gold)">${formatPrice(p.price)}</div>
+
+    // Group by category for better UX
+    const categories = { carpet: 'Ковры', hits: 'Хиты', new: 'Новинки', classic: 'Классика' };
+    let html = '';
+    Object.entries(categories).forEach(([cat, label]) => {
+        const catProducts = products.filter(p => p.category === cat);
+        if (!catProducts.length) return;
+        html += `<div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)">${label} (${catProducts.length})</div>`;
+        html += catProducts.map(p => `
+            <div class="admin-product-item">
+                <div class="admin-product-thumb" style="background-image:url('${esc(p.img)}')"></div>
+                <div>
+                    <div style="font-family:'Cormorant Garamond',serif;font-size:18px">${esc(p.name)}</div>
+                    <div style="font-size:11px;color:var(--text-dim)">${esc(p.sub)} · ${p.visible !== false ? '<span style="color:#6dd28a">видим</span>' : '<span style="color:#e06060">скрыт</span>'}</div>
+                    <div style="font-size:12px;color:var(--gold)">${formatPrice(p.price)}</div>
+                </div>
+                <div class="admin-product-actions">
+                    <button class="admin-mini-btn" onclick="editProduct('${p.id}')">Ред.</button>
+                    <button class="admin-mini-btn" onclick="toggleProduct('${p.id}')">${p.visible !== false ? 'Скрыть' : 'Показать'}</button>
+                    <button class="admin-mini-btn" onclick="deleteProduct('${p.id}')" style="color:#e06060">Удалить</button>
+                </div>
             </div>
-            <div class="admin-product-actions">
-                <button class="admin-mini-btn" onclick="editProduct('${p.id}')">Ред.</button>
-                <button class="admin-mini-btn" onclick="toggleProduct('${p.id}')">${p.visible !== false ? 'Скрыть' : 'Показать'}</button>
-                <button class="admin-mini-btn" onclick="deleteProduct('${p.id}')">Удалить</button>
-            </div>
-        </div>
-    `).join('');
+        `).join('');
+    });
+    wrap.innerHTML = html;
 }
 
 /* ════════════════════════════════════════════════════════
    КАРУСЕЛИ
 ════════════════════════════════════════════════════════ */
 function reinitCarousels() {
-document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
-    // Skip if already initialized
-    if (wrapper.dataset.inited === '1') {
-        return;
-    }
-    wrapper.dataset.inited = '1';
-
-    const track = wrapper.querySelector('.carousel-track');
-    const outer = wrapper.querySelector('.carousel-track-outer');
-    const prevBtn = wrapper.querySelector('.prev');
-    const nextBtn = wrapper.querySelector('.next');
-    const dotsContainer = wrapper.querySelector('.carousel-dots');
-    const progressFill = wrapper.querySelector('.progress-fill');
-
-    let cards = Array.from(track.querySelectorAll('.card'));
-    let total = cards.length;
-    let current = 0;
-    let isDragging = false;
-    let startX = 0;
-    let dragDelta = 0;
-    let cardWidth = 0;
-    let gap = 20;
-
-    // Get number of visible cards based on screen width
-    function getPerPage() {
-        const containerWidth = outer.getBoundingClientRect().width;
-        if (containerWidth <= 540) return 1;
-        if (containerWidth <= 900) return 2;
-        return 3;
-    }
-
-    let perPage = getPerPage();
-
-    // Calculate card width including gap
-    function updateCardWidth() {
-        if (!cards.length) return 0;
-        const containerWidth = outer.getBoundingClientRect().width;
-        // Card width = (container width - (gaps between visible cards)) / perPage
-        cardWidth = (containerWidth - (gap * (perPage - 1))) / perPage;
-        // Set actual width to cards for consistency
-        cards.forEach(card => {
-            card.style.flex = `0 0 ${cardWidth}px`;
-            card.style.minWidth = `${cardWidth}px`;
-        });
-        return cardWidth + gap;
-    }
-
-    // Maximum index we can scroll to
-    function getMaxIndex() {
-        return Math.max(0, total - perPage);
-    }
-
-    function buildDots() {
-        if (!dotsContainer) return;
-        dotsContainer.innerHTML = '';
-        const maxIndex = getMaxIndex();
-        for (let i = 0; i <= maxIndex; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'carousel-dot' + (i === current ? ' active' : '');
-            dot.addEventListener('click', () => goTo(i));
-            dotsContainer.appendChild(dot);
-        }
-    }
-
-    function updateDots() {
-        if (!dotsContainer) return;
-        dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
-            d.classList.toggle('active', i === current);
-        });
-    }
-
-    function updateProgress() {
-        if (!progressFill) return;
-        const maxIndex = getMaxIndex();
-        if (maxIndex === 0) {
-            progressFill.style.width = '100%';
-        } else {
-            const progress = ((current + perPage) / total) * 100;
-            progressFill.style.width = Math.min(progress, 100) + '%';
-        }
-    }
-
-    function updateButtons() {
-        const maxIndex = getMaxIndex();
-        if (prevBtn) prevBtn.disabled = current === 0;
-        if (nextBtn) nextBtn.disabled = current >= maxIndex;
-    }
-
-    function goTo(index) {
-        const maxIndex = getMaxIndex();
-        current = Math.max(0, Math.min(index, maxIndex));
-
-        const step = updateCardWidth();
-        const offset = current * step;
-
-        track.style.transform = `translateX(-${offset}px)`;
-
-        updateButtons();
-        updateDots();
-        updateProgress();
-    }
-
-    function next() {
-        const maxIndex = getMaxIndex();
-        if (current < maxIndex) {
-            goTo(current + 1);
-        }
-    }
-
-    function prev() {
-        if (current > 0) {
-            goTo(current - 1);
-        }
-    }
-
-    // Event listeners
-    if (prevBtn) prevBtn.addEventListener('click', prev);
-    if (nextBtn) nextBtn.addEventListener('click', next);
-
-    // Touch events
-    outer.addEventListener('touchstart', e => {
-        startX = e.touches[0].clientX;
-        dragDelta = 0;
-        track.style.transition = 'none';
-    }, { passive: true });
-
-    outer.addEventListener('touchmove', e => {
-        if (startX === 0) return;
-        const x = e.touches[0].clientX;
-        dragDelta = x - startX;
-        const step = updateCardWidth();
-        const currentOffset = current * step;
-        const newOffset = currentOffset - dragDelta;
-        track.style.transform = `translateX(-${newOffset}px)`;
-    }, { passive: true });
-
-    outer.addEventListener('touchend', () => {
-        track.style.transition = '';
-        if (dragDelta < -50) {
-            next();
-        } else if (dragDelta > 50) {
-            prev();
-        } else {
-            goTo(current);
-        }
-        startX = 0;
-        dragDelta = 0;
+    document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+        // Reset init flag so carousel can re-init after products update
+        delete wrapper.dataset.inited;
     });
+    initCarousels();
+}
 
-    // Mouse drag events
-    outer.addEventListener('mousedown', e => {
-        isDragging = true;
-        startX = e.clientX;
-        dragDelta = 0;
-        track.style.transition = 'none';
-        outer.style.cursor = 'grabbing';
-    });
+function initCarousels() {
+    document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+        if (wrapper.dataset.inited === '1') return;
+        wrapper.dataset.inited = '1';
 
-    document.addEventListener('mousemove', e => {
-        if (!isDragging) return;
-        dragDelta = e.clientX - startX;
-        const step = updateCardWidth();
-        const currentOffset = current * step;
-        const newOffset = currentOffset - dragDelta;
-        track.style.transform = `translateX(-${newOffset}px)`;
-    });
+        const track = wrapper.querySelector('.carousel-track');
+        const outer = wrapper.querySelector('.carousel-track-outer');
+        const prevBtn = wrapper.querySelector('.prev');
+        const nextBtn = wrapper.querySelector('.next');
+        const dotsContainer = wrapper.querySelector('.carousel-dots');
+        const progressFill = wrapper.querySelector('.progress-fill');
 
-    document.addEventListener('mouseup', () => {
-        if (!isDragging) return;
-        isDragging = false;
-        track.style.transition = '';
-        outer.style.cursor = '';
+        let cards = Array.from(track.querySelectorAll('.card'));
+        let total = cards.length;
+        let current = 0;
+        let isDragging = false;
+        let startX = 0;
+        let dragDelta = 0;
+        let cardWidth = 0;
+        const gap = 20;
 
-        if (dragDelta < -60) {
-            next();
-        } else if (dragDelta > 60) {
-            prev();
-        } else {
-            goTo(current);
+        function getPerPage() {
+            const containerWidth = outer.getBoundingClientRect().width;
+            if (containerWidth <= 540) return 1;
+            if (containerWidth <= 900) return 2;
+            return 3;
         }
-        dragDelta = 0;
-    });
 
-    // Initialize
-    updateCardWidth();
-    buildDots();
-    goTo(0);
+        let perPage = getPerPage();
 
-    // Handle resize
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            const newPerPage = getPerPage();
-            if (newPerPage !== perPage) {
-                perPage = newPerPage;
-                current = Math.min(current, getMaxIndex());
+        function updateCardWidth() {
+            cards = Array.from(track.querySelectorAll('.card'));
+            total = cards.length;
+            if (!cards.length) return 0;
+            const containerWidth = outer.getBoundingClientRect().width;
+            cardWidth = (containerWidth - (gap * (perPage - 1))) / perPage;
+            cards.forEach(card => {
+                card.style.flex = `0 0 ${cardWidth}px`;
+                card.style.minWidth = `${cardWidth}px`;
+            });
+            return cardWidth + gap;
+        }
+
+        function getMaxIndex() {
+            return Math.max(0, total - perPage);
+        }
+
+        function buildDots() {
+            if (!dotsContainer) return;
+            dotsContainer.innerHTML = '';
+            const maxIndex = getMaxIndex();
+            for (let i = 0; i <= maxIndex; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot' + (i === current ? ' active' : '');
+                dot.addEventListener('click', () => goTo(i));
+                dotsContainer.appendChild(dot);
             }
-            updateCardWidth();
-            buildDots();
-            goTo(current);
-        }, 100);
+        }
+
+        function updateDots() {
+            if (!dotsContainer) return;
+            dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
+                d.classList.toggle('active', i === current);
+            });
+        }
+
+        function updateProgress() {
+            if (!progressFill) return;
+            const maxIndex = getMaxIndex();
+            if (maxIndex === 0) {
+                progressFill.style.width = '100%';
+            } else {
+                progressFill.style.width = Math.min(((current + perPage) / total) * 100, 100) + '%';
+            }
+        }
+
+        function updateButtons() {
+            const maxIndex = getMaxIndex();
+            if (prevBtn) prevBtn.disabled = current === 0;
+            if (nextBtn) nextBtn.disabled = current >= maxIndex;
+        }
+
+        function goTo(index) {
+            const maxIndex = getMaxIndex();
+            current = Math.max(0, Math.min(index, maxIndex));
+            const step = updateCardWidth();
+            track.style.transform = `translateX(-${current * step}px)`;
+            updateButtons();
+            updateDots();
+            updateProgress();
+        }
+
+        function next() { if (current < getMaxIndex()) goTo(current + 1); }
+        function prev() { if (current > 0) goTo(current - 1); }
+
+        if (prevBtn) prevBtn.addEventListener('click', prev);
+        if (nextBtn) nextBtn.addEventListener('click', next);
+
+        outer.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+            dragDelta = 0;
+            track.style.transition = 'none';
+        }, { passive: true });
+
+        outer.addEventListener('touchmove', e => {
+            if (startX === 0) return;
+            dragDelta = e.touches[0].clientX - startX;
+            const step = updateCardWidth();
+            track.style.transform = `translateX(-${current * step - dragDelta}px)`;
+        }, { passive: true });
+
+        outer.addEventListener('touchend', () => {
+            track.style.transition = '';
+            if (dragDelta < -50) next();
+            else if (dragDelta > 50) prev();
+            else goTo(current);
+            startX = 0;
+            dragDelta = 0;
+        });
+
+        outer.addEventListener('mousedown', e => {
+            isDragging = true;
+            startX = e.clientX;
+            dragDelta = 0;
+            track.style.transition = 'none';
+            outer.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            dragDelta = e.clientX - startX;
+            const step = updateCardWidth();
+            track.style.transform = `translateX(-${current * step - dragDelta}px)`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            track.style.transition = '';
+            outer.style.cursor = '';
+            if (dragDelta < -60) next();
+            else if (dragDelta > 60) prev();
+            else goTo(current);
+            dragDelta = 0;
+        });
+
+        updateCardWidth();
+        buildDots();
+        goTo(0);
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const newPerPage = getPerPage();
+                if (newPerPage !== perPage) {
+                    perPage = newPerPage;
+                    current = Math.min(current, getMaxIndex());
+                }
+                updateCardWidth();
+                buildDots();
+                goTo(current);
+            }, 100);
+        });
     });
-});
+}
+
+/* ════════════════════════════════════════════════════════
+   УТИЛИТЫ КОПИРОВАНИЯ
+════════════════════════════════════════════════════════ */
+function copyText(text, btn) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            markCopied(btn);
+            showToast('Скопировано!');
+        }).catch(() => fallbackCopy(text, btn));
+    } else {
+        fallbackCopy(text, btn);
+    }
+}
+
+function fallbackCopy(text, btn) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('Скопировано!'); markCopied(btn); }
+    catch(e) { showToast('Ошибка копирования', 'error'); }
+    document.body.removeChild(ta);
+}
+
+function markCopied(btn) {
+    if (!btn) return;
+    btn.classList.add('copied');
+    btn.innerHTML = '<i class="fas fa-check"></i>';
+    setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="fas fa-copy"></i>';
+    }, 2000);
+}
+
+function copySbpAmount(btn) {
+    const el = document.getElementById('sbp-amount');
+    if (!el) return;
+    const raw = el.textContent.replace(/[^\d]/g, '');
+    copyText(raw, btn);
 }
 
 /* ════════════════════════════════════════════════════════
@@ -3183,10 +3295,8 @@ function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
     toast.className = 'toast';
-
     const iconMap = { success: 'fas fa-check-circle', error: 'fas fa-exclamation-circle', warning: 'fas fa-info-circle' };
     toast.innerHTML = `<i class="${iconMap[type] || iconMap.success}"></i> ${message}`;
-
     container.appendChild(toast);
     setTimeout(() => {
         toast.style.animation = 'toastOut 0.3s ease forwards';
@@ -3198,43 +3308,41 @@ function showToast(message, type = 'success') {
    УТИЛИТЫ
 ════════════════════════════════════════════════════════ */
 function formatPrice(n) {
-    return n.toLocaleString('ru-RU') + ' ₽';
+    return Number(n).toLocaleString('ru-RU') + ' ₽';
 }
 
 /* ════════════════════════════════════════════════════════
-   URL-BASED ROUTING — /admin
+   URL-BASED ROUTING
+   Работает по: /#admin  и  /admin  и  /admin.html
 ════════════════════════════════════════════════════════ */
 function checkRoute() {
-    if (window.location.hash === '#admin') {
+    const hash = window.location.hash;
+    const path = window.location.pathname;
+    if (hash === '#admin' ||
+        path === '/admin' ||
+        path.endsWith('/admin') ||
+        path.endsWith('/admin.html')) {
         openAdmin();
     }
 }
 
 window.addEventListener('hashchange', checkRoute);
 window.addEventListener('popstate', checkRoute);
-checkRoute();
 
 /* ════════════════════════════════════════════════════════
    ИНИЦИАЛИЗАЦИЯ
 ════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-    if (!Array.isArray(products)) {
+    // Если localStorage пуст — парсим товары из HTML
+    if (!Array.isArray(products) || products.length === 0) {
         products = parseInitialProductsFromHtml();
         saveProducts();
     }
     renderProductsToSite();
-    reinitCarousels();
+    initCarousels();
     updateCartUI();
+    checkRoute();
 });
-
-// На случай если DOMContentLoaded уже прошёл
-if (!Array.isArray(products)) {
-    products = parseInitialProductsFromHtml();
-    saveProducts();
-}
-renderProductsToSite();
-reinitCarousels();
-updateCartUI();
 </script>
 </body>
 </html>
