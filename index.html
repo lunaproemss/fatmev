@@ -1597,11 +1597,72 @@
             .sbp-req-row { flex-wrap: wrap; gap: 6px; }
             .sbp-req-label { min-width: unset; width: 100%; margin-bottom: 2px; }
         }
+
+        /* ═══════════════════════════════════════════
+           МОБИЛЬНАЯ АДМИН-ПАНЕЛЬ — УЛУЧШЕНИЯ
+        ═══════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .admin-product-item {
+                grid-template-columns: 48px 1fr auto;
+                gap: 8px;
+                align-items: center;
+                padding: 12px 8px;
+            }
+            .admin-product-item > div:nth-child(2) {
+                min-width: 0;
+                overflow: hidden;
+            }
+            .admin-product-item > div:nth-child(2) div:first-child {
+                font-size: 14px !important;
+                white-space: normal;
+                word-break: break-word;
+                line-height: 1.3;
+            }
+            .admin-product-actions {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .admin-mini-btn {
+                font-size: 9px;
+                padding: 5px 8px;
+                white-space: nowrap;
+                text-align: center;
+            }
+            .admin-product-thumb {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-product-item {
+                grid-template-columns: 36px 1fr auto;
+                gap: 6px;
+            }
+            .admin-product-item > div:nth-child(2) div:first-child {
+                font-size: 13px !important;
+            }
+            .admin-product-actions {
+                gap: 4px;
+            }
+            .admin-mini-btn {
+                font-size: 8px;
+                padding: 4px 6px;
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           ПАТЧ: Гарантируем видимость блока товаров
+           на всех устройствах и в любых браузерах
+        ═══════════════════════════════════════════ */
+        #admin-products-list,
+        .admin-product-list {
+            display: block !important;
+        }
     </style>
 <base target="_blank">
 </head>
 <body>
-
 <!-- ══════════════════════════════════════════
      ADMIN PANEL (hidden page)
 ═══════════════════════════════════════════ -->
@@ -2357,6 +2418,18 @@
 
 <script>
 /* ════════════════════════════════════════════════════════
+   ПАТЧ 1: ВЕРСИОНИРОВАНИЕ КЭША
+   Сбрасывает старый localStorage при обновлении сайта.
+   Это главная причина, почему на телефоне ковры не
+   появлялись — старый кэш без категории carpet.
+════════════════════════════════════════════════════════ */
+const APP_VERSION = '2.0';
+if (localStorage.getItem('fatmev_version') !== APP_VERSION) {
+    localStorage.removeItem('fatmev_products');
+    localStorage.setItem('fatmev_version', APP_VERSION);
+}
+
+/* ════════════════════════════════════════════════════════
    КОНФИГУРАЦИЯ УВЕДОМЛЕНИЙ
 ════════════════════════════════════════════════════════ */
 const NOTIFICATIONS_CONFIG = {
@@ -2479,20 +2552,22 @@ function renderCartItems() {
 }
 
 /* ════════════════════════════════════════════════════════
-   ПАРСИНГ ТОВАРОВ ИЗ HTML (первый запуск)
-   ⚡ FIX: используем #carpet .carousel-track .card
+   ПАТЧ 2: ПАРСИНГ ТОВАРОВ ИЗ HTML
+   Добавлена диагностика в консоль — поможет отладить
+   если проблема повторится на новом устройстве.
 ════════════════════════════════════════════════════════ */
 function parseInitialProductsFromHtml() {
     const list = [];
     const addFromCards = (selector, category) => {
-        document.querySelectorAll(selector).forEach((card, idx) => {
-            const img = card.querySelector('[style*="background-image"]');
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((card, idx) => {
+            const imgEl = card.querySelector('[style*="background-image"]');
             const name = card.querySelector('.card-name,.popular-name')?.textContent?.trim() || '';
             const sub = card.querySelector('.card-sub,.popular-sub')?.textContent?.trim() || '';
             const priceNew = card.querySelector('.price-new')?.textContent?.replace(/[^\d]/g, '');
             const priceOld = card.querySelector('.price-old')?.textContent?.replace(/[^\d]/g, '');
             const badge = card.querySelector('.card-badge,.popular-tag')?.textContent?.trim() || '';
-            const m = img?.style?.backgroundImage?.match(/url\(['"]?(.*?)['"]?\)/i);
+            const m = imgEl?.style?.backgroundImage?.match(/url\(['"]?(.*?)['"]?\)/i);
             const image = m ? m[1] : '';
             if (!name || !image) return;
             list.push({
@@ -2509,11 +2584,16 @@ function parseInitialProductsFromHtml() {
         });
     };
 
-    // ⚡ FIX: Ковры теперь используют carousel-track .card (единый формат)
     addFromCards('#carpet .carousel-track .card', 'carpet');
     addFromCards('#hits .carousel-track .card', 'hits');
     addFromCards('#new .carousel-track .card', 'new');
     addFromCards('#classic .carousel-track .card', 'classic');
+
+    // Диагностика: выводим счётчик товаров по категориям
+    const counts = {};
+    list.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
+    console.log('[Fatmev] Товары, считанные из HTML:', counts);
+
     return list;
 }
 
@@ -2592,7 +2672,6 @@ function esc(s = '') {
 
 /* ════════════════════════════════════════════════════════
    РЕНДЕР ТОВАРОВ НА САЙТ
-   ⚡ FIX: Ковры теперь рендерятся в carousel-track
 ════════════════════════════════════════════════════════ */
 function renderProductsToSite() {
     const buildCard = (p) => `
@@ -2776,7 +2855,7 @@ function openSbpModal(order) {
     document.getElementById('sbp-amount').textContent = formatPrice(order.total);
     document.getElementById('sbp-order-id').textContent = order.id;
     const payUrl = 'https://www.tinkoff.ru/rm/r_UFLfCEWkNM.AAMaJCIFtn/HhdYX43282';
-const data = payUrl;
+    const data = payUrl;
     document.getElementById('sbp-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(data)}`;
     const modal = document.getElementById('sbp-modal');
     modal.style.display = 'flex';
@@ -2983,7 +3062,6 @@ function editProduct(id) {
     document.getElementById('p-badge').value = p.badge || '';
     document.getElementById('p-visible').checked = p.visible !== false;
     document.getElementById('p-save-btn').textContent = 'Сохранить изменения';
-    // Scroll to form
     document.querySelector('.admin-product-form').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -3011,6 +3089,9 @@ function toggleProduct(id) {
     showToast(p.visible ? 'Товар показан' : 'Товар скрыт');
 }
 
+/* ════════════════════════════════════════════════════════
+   ПАТЧ 3: renderProductsAdmin — carpet гарантированно первый
+════════════════════════════════════════════════════════ */
 function renderProductsAdmin() {
     const wrap = document.getElementById('admin-products-list');
     if (!wrap) return;
@@ -3019,8 +3100,14 @@ function renderProductsAdmin() {
         return;
     }
 
-    // Group by category for better UX
-    const categories = { carpet: 'Ковры', hits: 'Хиты', new: 'Новинки', classic: 'Классика' };
+    // carpet идёт первым — именно он пропадал на мобильных
+    const categories = {
+        carpet: 'Ковры',
+        hits: 'Хиты',
+        new: 'Новинки',
+        classic: 'Классика'
+    };
+
     let html = '';
     Object.entries(categories).forEach(([cat, label]) => {
         const catProducts = products.filter(p => p.category === cat);
@@ -3050,7 +3137,6 @@ function renderProductsAdmin() {
 ════════════════════════════════════════════════════════ */
 function reinitCarousels() {
     document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
-        // Reset init flag so carousel can re-init after products update
         delete wrapper.dataset.inited;
     });
     initCarousels();
@@ -3291,7 +3377,6 @@ function formatPrice(n) {
 
 /* ════════════════════════════════════════════════════════
    URL-BASED ROUTING
-   Работает по: /#admin  и  /admin  и  /admin.html
 ════════════════════════════════════════════════════════ */
 function checkRoute() {
     const hash = window.location.hash;
@@ -3311,6 +3396,7 @@ window.addEventListener('popstate', checkRoute);
    ИНИЦИАЛИЗАЦИЯ
 ════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
+    // APP_VERSION уже проверена выше — если кэш был старый, он уже сброшен.
     // Если localStorage пуст — парсим товары из HTML
     if (!Array.isArray(products) || products.length === 0) {
         products = parseInitialProductsFromHtml();
